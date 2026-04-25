@@ -244,7 +244,7 @@ class MealSectionWidget extends StatelessWidget {
 
     /// HEADER ROW - Centered with text wrapping
 Row(
-  mainAxisAlignment: MainAxisAlignment.center,
+  // mainAxisAlignment: MainAxisAlignment.center,
   crossAxisAlignment: CrossAxisAlignment.center,
   children: [
     Image.asset(

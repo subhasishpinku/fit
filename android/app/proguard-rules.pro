@@ -1,26 +1,48 @@
 # ------------------------------
-# 🔥 KEEP JSON & MODELS
+# 🔥 ADD THESE FOR WEBVIEW & VIMEO
 # ------------------------------
--keepattributes Signature
--keepattributes *Annotation*
 
-# Keep your model classes (CHANGE PACKAGE NAME if needed)
--keep class com.org.fitamplify.models.** { *; }
+# Keep JavaScript interfaces
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
 
-# ------------------------------
-# 🔥 DIO / NETWORK
-# ------------------------------
+# Keep WebView related classes
+-keep class android.webkit.** { *; }
+-dontwarn android.webkit.**
+
+# Keep Vimeo player related JavaScript
+-keepattributes JavascriptInterface
+-keepattributes *Annotations*
+
+# Keep all HTML/JS related classes
+-keep class com.android.org.chromium.** { *; }
+-dontwarn com.android.org.chromium.**
+
+# Keep Chrome custom tabs
+-keep class androidx.browser.** { *; }
+
+# Keep Vimeo URLs and patterns
+-keep class com.vimeo.** { *; }
+
+# Ensure webview settings are kept
+-keep class android.webkit.WebView {
+    public *;
+    protected *;
+}
+
+# Keep all classes related to networking (important for Vimeo)
 -keep class okhttp3.** { *; }
--keep class okio.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
 
-# ------------------------------
-# 🔥 JSON (org.json + gson safe)
-# ------------------------------
--keep class org.json.** { *; }
--keep class com.google.gson.** { *; }
+# Keep JSR 305 annotations
+-dontwarn javax.annotation.**
 
-# ------------------------------
-# 🔥 OPTIONAL (if using Retrofit)
-# ------------------------------
--keep class retrofit2.** { *; }
--keep interface retrofit2.** { *; }
+# Keep all native method names
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep our VimeoPlayerScreen class
+-keep class com.org.fitamplify.VimeoPlayerScreen** { *; }

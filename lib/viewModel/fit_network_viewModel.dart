@@ -1,59 +1,3 @@
-// import 'package:aifitness/models/news_categories_model.dart';
-// import 'package:aifitness/models/news_model.dart';
-// import 'package:aifitness/repository/news_category_repository.dart';
-// import 'package:aifitness/repository/news_repository.dart';
-// import 'package:flutter/material.dart';
-
-// class FitNetworkViewModel extends ChangeNotifier {
-//   final _repo = NewsCategoryRepository();
-//   final repository = NewsRepository();
-//   int selectedCategoryId = 0;
-
-//   bool isLoading = false;
-//   String? error;
-//   List<NewsCategory> categories = [];
-//   List<NewsItem> newsList = [];
-//   String? errorMessage;
-//   Future<void> getCategories() async {
-//     isLoading = true;
-//     error = null;
-//     notifyListeners();
-
-//     try {
-//       final response = await _repo.fetchCategories();
-//       categories = response.data;
-//     } catch (e) {
-//       error = e.toString();
-//       print("getCategories $e");
-//     }
-
-//     isLoading = false;
-//     notifyListeners();
-//   }
-
-//   Future<void> loadNews({required int userId, required int categoryId, String? deviceId}) async {
-//     try {
-//       isLoading = true;
-//       notifyListeners();
-
-//       newsList = await repository.fetchNews(userId,categoryId,deviceId);
-//       print("newsList ${newsList.toString()}");
-//       isLoading = false;
-//       notifyListeners();
-//     } catch (e) {
-//       errorMessage = e.toString();
-//       print("newsList $e");
-//       isLoading = false;
-//       notifyListeners();
-//     }
-//   }
-
-
-// void setSelectedCategory(int id) {
-//   selectedCategoryId = id;
-//   notifyListeners();
-// }
-// }
 import 'package:aifitness/models/news_categories_model.dart';
 import 'package:aifitness/models/news_model.dart';
 import 'package:aifitness/repository/news_category_repository.dart';
@@ -85,17 +29,17 @@ class FitNetworkViewModel extends ChangeNotifier {
       categories = response.data;
       print("Categories loaded: ${categories.length}");
       
-      // Ensure "All" category is selected by default
+      // Ensure first category is selected by default
       if (categories.isNotEmpty && selectedCategoryId == 0) {
         selectedCategoryId = categories.first.id;
       }
     } catch (e) {
       error = e.toString();
       print("getCategories Error: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
-
-    isLoading = false;
-    notifyListeners();
   }
 
   Future<void> loadNews({
@@ -114,6 +58,7 @@ class FitNetworkViewModel extends ChangeNotifier {
       }
       notifyListeners();
 
+      print("Loading news for category: $categoryId");
       final news = await repository.fetchNews(userId, categoryId, deviceId);
       
       if (loadMore) {
@@ -122,18 +67,17 @@ class FitNetworkViewModel extends ChangeNotifier {
         newsList = news;
       }
       
-      print("News loaded: ${newsList.length} items for category: $categoryId");
+      print("News loaded successfully: ${newsList.length} items for category: $categoryId");
       
-      if (loadMore) {
-        isLoadingMore = false;
-      } else {
-        isLoading = false;
+      // Print each video link for debugging
+      for (var i = 0; i < newsList.length; i++) {
+        print("Video ${i+1}: ${newsList[i].vimeoLink}");
       }
-      notifyListeners();
+      
     } catch (e) {
       errorMessage = e.toString();
       print("loadNews Error: $e");
-      
+    } finally {
       if (loadMore) {
         isLoadingMore = false;
       } else {

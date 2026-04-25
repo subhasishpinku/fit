@@ -34,7 +34,7 @@ class SigninSecondAppBarss extends StatelessWidget
                 onPressed: () => Navigator.pop(context),
               ),
               Text(
-                "Fit Nework",
+                "Fit Network",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
 class VimeoPlayerScreen extends StatefulWidget {
   final String videoUrl;
   final double? height;
@@ -15,6 +18,7 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
   late WebViewController controller;
   bool _isLoading = true;
   String? _errorMessage;
+  bool _isReleased = false;
 
   @override
   void initState() {
@@ -22,32 +26,38 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
     _initializePlayer();
   }
 
-  void _initializePlayer() {
+  @override
+  void dispose() {
+    _isReleased = true;
+    super.dispose();
+  }
+
+  void _initializePlayer() async {
     try {
       String videoId = _extractVimeoId(widget.videoUrl);
       
       if (videoId.isEmpty) {
-        setState(() {
-          _errorMessage = "Invalid Vimeo URL";
-          _isLoading = false;
-        });
+        if (!_isReleased) {
+          setState(() {
+            _errorMessage = "Invalid Vimeo URL";
+            _isLoading = false;
+          });
+        }
         return;
       }
 
-      // Proper Vimeo embed URL with all necessary parameters
       final embedUrl = "https://player.vimeo.com/video/$videoId";
       
-      print("🎬 Vimeo Video ID: $videoId");
-      print("🎬 Embed URL: $embedUrl");
+      debugPrint("🎬 Vimeo Video ID: $videoId");
+      debugPrint("🎬 Embed URL: $embedUrl");
 
-      // Complete HTML with proper headers and meta tags
+      // Enhanced HTML with better error handling
       final embedHtml = """
         <!DOCTYPE html>
         <html>
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-            <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
             <style>
               * {
                 margin: 0;
@@ -79,19 +89,37 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
                 height: 100%;
                 border: none;
               }
+              
+              .error-message {
+                color: white;
+                text-align: center;
+                padding: 20px;
+                font-family: sans-serif;
+              }
             </style>
           </head>
           <body>
             <div class="video-wrapper">
               <iframe 
-                src="$embedUrl?autoplay=0&autopause=0&background=0&byline=0&color=00ADEF&controls=1&dnt=1&loop=0&portrait=0&title=0&transparent=0"
+                src="$embedUrl?autoplay=0&autopause=0&background=0&byline=0&color=00ADEF&controls=1&dnt=1&loop=0&portrait=0&title=0&transparent=0&api=1&player_id=vimeo-player"
                 frameborder="0"
-                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
                 allowfullscreen
                 webkitallowfullscreen
                 mozallowfullscreen>
               </iframe>
             </div>
+            <script>
+              window.onerror = function(msg, url, line, col, error) {
+                console.log('Error: ' + msg);
+                return false;
+              };
+              
+              // Log when iframe loads
+              document.querySelector('iframe').addEventListener('load', function() {
+                console.log('Vimeo iframe loaded');
+              });
+            </script>
           </body>
         </html>
       """;
@@ -99,27 +127,30 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
       controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setBackgroundColor(Colors.black)
-        ..setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        ..setUserAgent("Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36")
+        ..enableZoom(false)
         ..setNavigationDelegate(
           NavigationDelegate(
             onPageStarted: (String url) {
-              print("🌐 Page started: $url");
-              setState(() => _isLoading = true);
+              debugPrint("🌐 Page started: $url");
+              if (!_isReleased) {
+                setState(() => _isLoading = true);
+              }
             },
             onPageFinished: (String url) {
-              print("✅ Page finished: $url");
-              setState(() => _isLoading = false);
+              debugPrint("✅ Page finished: $url");
+              if (!_isReleased) {
+                setState(() => _isLoading = false);
+              }
             },
             onNavigationRequest: (NavigationRequest request) {
-              print("🔗 Navigation requested: ${request.url}");
+              debugPrint("🔗 Navigation requested: ${request.url}");
               
-              // Allow Vimeo domains and prevent redirects
               if (request.url.contains('vimeo.com') || 
                   request.url.contains('player.vimeo.com')) {
                 return NavigationDecision.navigate;
               }
               
-              // Block external redirects
               if (!request.url.startsWith('data:') && 
                   !request.url.contains('vimeo.com')) {
                 return NavigationDecision.prevent;
@@ -128,22 +159,28 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
               return NavigationDecision.navigate;
             },
             onWebResourceError: (error) {
-              print("❌ WebView Error: ${error.description}");
-              setState(() {
-                _errorMessage = error.description;
-                _isLoading = false;
-              });
+              debugPrint("❌ WebView Error: ${error.description}");
+              if (!_isReleased) {
+                setState(() {
+                  _errorMessage = error.description;
+                  _isLoading = false;
+                });
+              }
             },
           ),
-        )
-        ..loadHtmlString(embedHtml, baseUrl: "https://player.vimeo.com");
-        
+        );
+      
+      // Load HTML with proper base URL
+      await controller.loadHtmlString(embedHtml, baseUrl: "https://player.vimeo.com");
+      
     } catch (e) {
-      print("❌ Error initializing Vimeo player: $e");
-      setState(() {
-        _errorMessage = e.toString();
-        _isLoading = false;
-      });
+      debugPrint("❌ Error initializing Vimeo player: $e");
+      if (!_isReleased) {
+        setState(() {
+          _errorMessage = e.toString();
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -179,13 +216,24 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
               const SizedBox(height: 8),
               Text(
                 'Failed to load video',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
               const SizedBox(height: 4),
               Text(
                 _errorMessage!,
-                style: TextStyle(color: Colors.white70, fontSize: 12),
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _errorMessage = null;
+                    _isLoading = true;
+                  });
+                  _initializePlayer();
+                },
+                child: const Text('Retry'),
               ),
             ],
           ),

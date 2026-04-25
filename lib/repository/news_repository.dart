@@ -77,6 +77,13 @@ class NewsRepository {
         return [];
       }
 
+      print("Found ${items.length} items for category: $categoryId");
+      
+      // Log each item's vimeo link
+      for (var item in items) {
+        print("Item - Title: ${item['title']}, Vimeo Link: ${item['vimeo_link']}");
+      }
+
       return items.map((item) => NewsItem.fromJson(item)).toList();
     } catch (e) {
       print("News Fetch Error: $e");

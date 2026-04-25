@@ -132,19 +132,26 @@ class DashboardBodyViewModel extends ChangeNotifier {
     }
   }
 
-  List<double> _toDoubleList(dynamic list) {
-    try {
-      if (list == null || list.isEmpty) return [];
+List<double> _toDoubleList(dynamic list) {
+  try {
+    if (list == null || list.isEmpty) return [];
 
-      return List<double>.from(
-        list.map((e) {
-          final value = e["log_value"];
-          return double.tryParse(value.toString()) ?? 0;
-        }),
-      );
-    } catch (e) {
-      print("Parse Error = $e");
-      return [];
-    }
+    return List<double>.from(
+      list.map((e) {
+        final value =
+            e["log_value"] ??
+            e["value"] ??
+            e["weight"] ??
+            e["bfp"];
+
+        final cleaned = value.toString().replaceAll(RegExp(r'[^0-9.]'), '');
+
+        return double.tryParse(cleaned) ?? 0;
+      }),
+    );
+  } catch (e) {
+    print("Parse Error = $e");
+    return [];
   }
+}
 }

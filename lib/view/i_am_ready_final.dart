@@ -85,7 +85,7 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
     );
   }
 
-  Widget _buildExerciseCard(
+  Widget _buildExerciseCard2(
     BuildContext context,
     IamReadyFinalViewModel vm,
     WorkoutExerciseModel exercise,
@@ -195,7 +195,129 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
       ),
     );
   }
+Widget _buildExerciseCard(
+  BuildContext context,
+  IamReadyFinalViewModel vm,
+  WorkoutExerciseModel exercise,
+) {
+  // Get media URL
+  final selectedMedia = exercise.mediaDecoded.isNotEmpty
+      ? exercise.mediaDecoded.firstWhere(
+          (m) => m.type.toLowerCase() == "embedded",
+          orElse: () => exercise.mediaDecoded.first,
+        )
+      : null;
 
+  String videoUrl = selectedMedia?.uri ?? "";
+  
+  // Handle relative paths
+  if (videoUrl.isNotEmpty && !videoUrl.startsWith('http') && !videoUrl.contains('vimeo.com')) {
+    videoUrl = "https://aipoweredfitness.com/$videoUrl";
+  }
+  
+  print("🎬 Final Video URL: $videoUrl");
+
+  return Container(
+    margin: const EdgeInsets.only(bottom: 20),
+    padding: const EdgeInsets.all(14),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 6,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          exercise.name,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+
+        // Video Player
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: videoUrl.isNotEmpty
+              ? VimeoPlayerScreen(
+                  videoUrl: videoUrl,
+                  height: 200,
+                )
+              : Container(
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.video_library, size: 48, color: Colors.grey),
+                        SizedBox(height: 8),
+                        Text('No video available'),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
+
+        const SizedBox(height: 16),
+        Text(
+          "Target Muscle: ${exercise.subcategory}",
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 6),
+
+        const Text(
+          "Set 1 = Warm-Up Set\nSet 2 = Failure Set\nSet 3 = Working Set (Pump Set)",
+          style: TextStyle(fontSize: 13.5, height: 1.4),
+        ),
+        const SizedBox(height: 12),
+
+        Row(
+          children: [
+            SizedBox(
+              width: 100,
+              child: ElevatedButton(
+                onPressed: () => vm.onHistoryPressed(context, exercise, userId),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.dashboardColor,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text("History"),
+              ),
+            ),
+            const SizedBox(width: 12),
+            SizedBox(
+              width: 100,
+              child: ElevatedButton(
+                onPressed: () => vm.onTrackPressed(context, exercise, userId),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.dashboardColor,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text("Track"),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
   Widget _buildExerciseCard1(
     BuildContext context,
     IamReadyFinalViewModel vm,

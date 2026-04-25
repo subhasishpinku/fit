@@ -40,7 +40,7 @@ class DashboardData {
   String? currentWeekTargetWeightValue;
   String? showWeightConfirmPopup;
   String? emailExist;
-  String? currentWeekTargetCaloriesPercentage;
+  dynamic currentWeekTargetCaloriesPercentage;
   int? currentMonth;
   int? showRewardsPopup;
   String? idealbfpFitness;
@@ -62,6 +62,8 @@ class DashboardData {
   List<dynamic>? latestTotalBodyWaterLogs;
   List<dynamic>? latestSubcutaneousFatLogs;
   List<dynamic>? latestVisceralFatLevelLogs;
+  String? todayWalkingStep;
+  String? todayCaloriesBurn;
 
   DashboardData({
     this.userDetails,
@@ -96,6 +98,8 @@ class DashboardData {
     this.latestTotalBodyWaterLogs,
     this.latestSubcutaneousFatLogs,
     this.latestVisceralFatLevelLogs,
+    this.todayWalkingStep,
+    this.todayCaloriesBurn,
   });
 
   factory DashboardData.fromJson(Map<String, dynamic> json) => DashboardData(
@@ -105,14 +109,14 @@ class DashboardData {
     dayDetails: json["day_details"] == null
         ? null
         : DayDetails.fromJson(json["day_details"]),
-    currentCaloriesIntake: json["current_calories_intake"],
-    targetCaloriesIntake: json["target_calories_intake"],
+    currentCaloriesIntake: json["current_calories_intake"]?.toString(),
+    targetCaloriesIntake: json["target_calories_intake"]?.toString(),
     currentWeightFormatted: json["current_weight_formatted"],
     targetWeightFormatted: json["target_weight_formatted"],
     currentWeekTargetWeight: json["current_week_target_weight"],
     currentWeekTargetWeightValue: json["current_week_target_weight_value"],
-    showWeightConfirmPopup: json["show_weight_confirm_popup"],
-    emailExist: json["email_exist"],
+    showWeightConfirmPopup: json["show_weight_confirm_popup"]?.toString(),
+    emailExist: json["email_exist"]?.toString(),
     currentWeekTargetCaloriesPercentage:
         json["current_week_target_calories_percentage"],
     currentMonth: json["current_month"],
@@ -122,19 +126,19 @@ class DashboardData {
     targetCalories: json["target_calories"] == null
         ? null
         : TargetCalories.fromJson(json["target_calories"]),
-    currentBfp: json["current_bfp"],
+    currentBfp: json["current_bfp"]?.toString(),
     currentBfpCat: json["current_bfp_cat"],
-    targetBfp: json["target_bfp"],
+    targetBfp: json["target_bfp"]?.toString(),
     targetBfpCat: json["target_bfp_cat"],
     newAppData: json["new_app_data"] == null
         ? null
         : NewAppData.fromJson(json["new_app_data"]),
-    currentPhase: json["current_phase"],
+    currentPhase: json["current_phase"]?.toString(),
     aiTargetCalories: json["ai_target_calories"] == null
         ? null
         : AiTargetCalories.fromJson(json["ai_target_calories"]),
     confirmPhaseWeightPopup: json["confirm_phase_weight_popup"],
-    aiWeightLogAddedToday: json["ai_weight_log_added_today"],
+    aiWeightLogAddedToday: json["ai_weight_log_added_today"]?.toString(),
     weekFlags: json["week_flags"] == null
         ? null
         : WeekFlags.fromJson(json["week_flags"]),
@@ -144,6 +148,8 @@ class DashboardData {
     latestTotalBodyWaterLogs: json["latest_total_body_water_logs"] ?? [],
     latestSubcutaneousFatLogs: json["latest_subcutaneous_fat_logs"] ?? [],
     latestVisceralFatLevelLogs: json["latest_visceral_fat_level_logs"] ?? [],
+    todayWalkingStep: json["today_walking_step"]?.toString(),
+    todayCaloriesBurn: json["today_calories_burn"]?.toString(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -180,6 +186,8 @@ class DashboardData {
     "latest_total_body_water_logs": latestTotalBodyWaterLogs,
     "latest_subcutaneous_fat_logs": latestSubcutaneousFatLogs,
     "latest_visceral_fat_level_logs": latestVisceralFatLevelLogs,
+    "today_walking_step": todayWalkingStep,
+    "today_calories_burn": todayCaloriesBurn,
   };
 }
 
@@ -190,12 +198,14 @@ class DashboardData {
 class UserDetails {
   int? id;
   String? userType;
+  String? machineProfileActive;
   String? deviceId;
   String? username;
   String? name;
   String? email;
   String? gender;
   String? image;
+  dynamic profilePic;
   String? birthYear;
   String? otp;
   dynamic token;
@@ -205,6 +215,8 @@ class UserDetails {
   String? deviceType;
   String? appType;
   String? caloriesCronDone;
+  String? caloriesCronDone2;
+  String? currentDashboardData;
   String? createdAt;
   String? updatedAt;
   String? imageFullUrl;
@@ -216,12 +228,14 @@ class UserDetails {
   UserDetails({
     this.id,
     this.userType,
+    this.machineProfileActive,
     this.deviceId,
     this.username,
     this.name,
     this.email,
     this.gender,
     this.image,
+    this.profilePic,
     this.birthYear,
     this.otp,
     this.token,
@@ -231,6 +245,8 @@ class UserDetails {
     this.deviceType,
     this.appType,
     this.caloriesCronDone,
+    this.caloriesCronDone2,
+    this.currentDashboardData,
     this.createdAt,
     this.updatedAt,
     this.imageFullUrl,
@@ -243,21 +259,25 @@ class UserDetails {
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
     id: json["id"],
     userType: json["user_type"],
+    machineProfileActive: json["machine_profile_active"]?.toString(),
     deviceId: json["device_id"],
     username: json["username"],
     name: json["name"],
     email: json["email"],
     gender: json["gender"],
     image: json["image"],
+    profilePic: json["profile_pic"],
     birthYear: json["birth_year"],
-    otp: json["otp"],
+    otp: json["otp"]?.toString(),
     token: json["token"],
     active: json["active"],
     winnerStatus: json["winner_status"],
     lastLoginAt: json["last_login_at"],
     deviceType: json["device_type"],
-    appType: json["app_type"],
-    caloriesCronDone: json["calories_cron_done"],
+    appType: json["app_type"]?.toString(),
+    caloriesCronDone: json["calories_cron_done"]?.toString(),
+    caloriesCronDone2: json["calories_cron_done2"]?.toString(),
+    currentDashboardData: json["current_dashboard_data"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     imageFullUrl: json["image_full_url"],
@@ -272,12 +292,14 @@ class UserDetails {
   Map<String, dynamic> toJson() => {
     "id": id,
     "user_type": userType,
+    "machine_profile_active": machineProfileActive,
     "device_id": deviceId,
     "username": username,
     "name": name,
     "email": email,
     "gender": gender,
     "image": image,
+    "profile_pic": profilePic,
     "birth_year": birthYear,
     "otp": otp,
     "token": token,
@@ -287,6 +309,8 @@ class UserDetails {
     "device_type": deviceType,
     "app_type": appType,
     "calories_cron_done": caloriesCronDone,
+    "calories_cron_done2": caloriesCronDone2,
+    "current_dashboard_data": currentDashboardData,
     "created_at": createdAt,
     "updated_at": updatedAt,
     "image_full_url": imageFullUrl,
@@ -366,7 +390,7 @@ class DayDetails {
     previousDayWorkoutStatus: json["previous_day_workout_status"],
     previousDayWorkoutStatusEs: json["previous_day_workout_status_es"],
     targetWeightFormatted: json["target_weight_formatted"],
-    targetWeight: json["target_weight"],
+    targetWeight: json["target_weight"]?.toString(),
     targetWeightUnit: json["target_weight_unit"],
     currentHeightFormatted: json["current_height_formatted"],
     currentHeight: json["current_height"],
@@ -460,6 +484,7 @@ class NewAppData {
   String? targetWeightDynamic2;
   String? totalLoss;
   String? weeksToTargetDynamic;
+  String? weeksToTargetDynamic222;
   String? targetCaloriesForWeightLoss;
   String? currentPhase;
   String? durationWeeksPhase1;
@@ -477,6 +502,7 @@ class NewAppData {
     this.targetWeightDynamic2,
     this.totalLoss,
     this.weeksToTargetDynamic,
+    this.weeksToTargetDynamic222,
     this.targetCaloriesForWeightLoss,
     this.currentPhase,
     this.durationWeeksPhase1,
@@ -489,24 +515,26 @@ class NewAppData {
     aiTargetCalories: json["ai_target_calories"] == null
         ? null
         : AiTargetCalories.fromJson(json["ai_target_calories"]),
-    targetWeightDynamic: json["target_weight_dynamic"],
-    totalWeeks: json["totalWeeks"],
+    targetWeightDynamic: json["target_weight_dynamic"]?.toString(),
+    totalWeeks: json["totalWeeks"]?.toString(),
     phaseSummaryDynamic: json["phase_summary_dynamic"] == null
         ? []
         : List<PhaseSummary>.from(
             json["phase_summary_dynamic"].map((x) => PhaseSummary.fromJson(x)),
           ),
-    targetMaintenanceEstimate: json["target_maintenance_estimate"],
-    targetWeight: json["target_weight"],
-    targetWeightDynamic2: json["targetWeightDynamic"],
-    totalLoss: json["totalLoss"],
-    weeksToTargetDynamic: json["weeks_to_target_dynamic"],
-    targetCaloriesForWeightLoss: json["target_calories_for_weight_loss"],
-    currentPhase: json["current_phase"],
-    durationWeeksPhase1: json["duration_weeks_phase1"],
-    durationWeeksPhase2: json["duration_weeks_phase2"],
-    targetWeightPhase1: json["target_weight_phase1"],
-    targetWeightPhase2: json["target_weight_phase2"],
+    targetMaintenanceEstimate: json["target_maintenance_estimate"]?.toString(),
+    targetWeight: json["target_weight"]?.toString(),
+    targetWeightDynamic2: json["targetWeightDynamic"]?.toString(),
+    totalLoss: json["totalLoss"]?.toString(),
+    weeksToTargetDynamic: json["weeks_to_target_dynamic"]?.toString(),
+    weeksToTargetDynamic222: json["weeks_to_target_dynamic222"]?.toString(),
+    targetCaloriesForWeightLoss: json["target_calories_for_weight_loss"]
+        ?.toString(),
+    currentPhase: json["current_phase"]?.toString(),
+    durationWeeksPhase1: json["duration_weeks_phase1"]?.toString(),
+    durationWeeksPhase2: json["duration_weeks_phase2"]?.toString(),
+    targetWeightPhase1: json["target_weight_phase1"]?.toString(),
+    targetWeightPhase2: json["target_weight_phase2"]?.toString(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -521,6 +549,7 @@ class NewAppData {
     "targetWeightDynamic": targetWeightDynamic2,
     "totalLoss": totalLoss,
     "weeks_to_target_dynamic": weeksToTargetDynamic,
+    "weeks_to_target_dynamic222": weeksToTargetDynamic222,
     "target_calories_for_weight_loss": targetCaloriesForWeightLoss,
     "current_phase": currentPhase,
     "duration_weeks_phase1": durationWeeksPhase1,
@@ -539,6 +568,7 @@ class PhaseSummary {
   String? startWeight;
   String? endWeight;
   String? targetWeightPhase1;
+  String? targetWeightPhase2;
   String? dailyCalories;
   String? maintenanceEstimate;
   String? deficientCalories;
@@ -550,21 +580,23 @@ class PhaseSummary {
     this.startWeight,
     this.endWeight,
     this.targetWeightPhase1,
+    this.targetWeightPhase2,
     this.dailyCalories,
     this.maintenanceEstimate,
     this.deficientCalories,
   });
 
   factory PhaseSummary.fromJson(Map<String, dynamic> json) => PhaseSummary(
-    phase: json["phase"],
-    durationWeeksPhase1: json["duration_weeks_phase1"],
-    durationWeeks: json["duration_weeks"],
-    startWeight: json["start_weight"],
-    endWeight: json["end_weight"],
-    targetWeightPhase1: json["target_weight_phase1"],
-    dailyCalories: json["daily_calories"],
-    maintenanceEstimate: json["maintenance_estimate"],
-    deficientCalories: json["deficient_calories"],
+    phase: json["phase"]?.toString(),
+    durationWeeksPhase1: json["duration_weeks_phase1"]?.toString(),
+    durationWeeks: json["duration_weeks"]?.toString(),
+    startWeight: json["start_weight"]?.toString(),
+    endWeight: json["end_weight"]?.toString(),
+    targetWeightPhase1: json["target_weight_phase1"]?.toString(),
+    targetWeightPhase2: json["target_weight_phase2"]?.toString(),
+    dailyCalories: json["daily_calories"]?.toString(),
+    maintenanceEstimate: json["maintenance_estimate"]?.toString(),
+    deficientCalories: json["deficient_calories"]?.toString(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -574,6 +606,7 @@ class PhaseSummary {
     "start_weight": startWeight,
     "end_weight": endWeight,
     "target_weight_phase1": targetWeightPhase1,
+    "target_weight_phase2": targetWeightPhase2,
     "daily_calories": dailyCalories,
     "maintenance_estimate": maintenanceEstimate,
     "deficient_calories": deficientCalories,
@@ -625,10 +658,10 @@ class AiTargetCalories {
         mealwise: json["mealwise"] == null
             ? null
             : Mealwise.fromJson(json["mealwise"]),
-        breakfast: (json["breakfast"] ?? 0).toDouble(),
-        lunch: (json["lunch"] ?? 0).toDouble(),
-        snacks: (json["snacks"] ?? 0).toDouble(),
-        dinner: (json["dinner"] ?? 0).toDouble(),
+        breakfast: _parseDouble(json["breakfast"]),
+        lunch: _parseDouble(json["lunch"]),
+        snacks: _parseDouble(json["snacks"]),
+        dinner: _parseDouble(json["dinner"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -645,6 +678,15 @@ class AiTargetCalories {
     "snacks": snacks,
     "dinner": dinner,
   };
+}
+
+// Helper function to safely parse double from various types
+double _parseDouble(dynamic value) {
+  if (value == null) return 0.0;
+  if (value is double) return value;
+  if (value is int) return value.toDouble();
+  if (value is String) return double.tryParse(value) ?? 0.0;
+  return 0.0;
 }
 
 // ---------------------------------------------------------
@@ -673,15 +715,27 @@ class Mealwise {
   });
 
   factory Mealwise.fromJson(Map<String, dynamic> json) => Mealwise(
-    preworkout: MealItem.fromJson(json["preworkout"]),
-    intraWorkout: MealItem.fromJson(json["intra_workout"]),
-    postWorkout: MealItem.fromJson(json["post_workout"]),
-    breakfast: MealItem.fromJson(json["breakfast"]),
-    lunch: MealItem.fromJson(json["lunch"]),
-    dinner: MealItem.fromJson(json["dinner"]),
-    snack: MealItem.fromJson(json["snack"]),
-    postWorkoutDiet: MealItem.fromJson(json["post_workout_diet"]),
-    preWorkoutDiet: MealItem.fromJson(json["pre_workout_diet"]),
+    preworkout: json["preworkout"] != null
+        ? MealItem.fromJson(json["preworkout"])
+        : null,
+    intraWorkout: json["intra_workout"] != null
+        ? MealItem.fromJson(json["intra_workout"])
+        : null,
+    postWorkout: json["post_workout"] != null
+        ? MealItem.fromJson(json["post_workout"])
+        : null,
+    breakfast: json["breakfast"] != null
+        ? MealItem.fromJson(json["breakfast"])
+        : null,
+    lunch: json["lunch"] != null ? MealItem.fromJson(json["lunch"]) : null,
+    dinner: json["dinner"] != null ? MealItem.fromJson(json["dinner"]) : null,
+    snack: json["snack"] != null ? MealItem.fromJson(json["snack"]) : null,
+    postWorkoutDiet: json["post_workout_diet"] != null
+        ? MealItem.fromJson(json["post_workout_diet"])
+        : null,
+    preWorkoutDiet: json["pre_workout_diet"] != null
+        ? MealItem.fromJson(json["pre_workout_diet"])
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -752,8 +806,8 @@ class WeekFlags {
   WeekFlags({this.deloadWeek, this.progressiveWeek});
 
   factory WeekFlags.fromJson(Map<String, dynamic> json) => WeekFlags(
-    deloadWeek: json["deload_week"],
-    progressiveWeek: json["progressive_week"],
+    deloadWeek: json["deload_week"]?.toString(),
+    progressiveWeek: json["progressive_week"]?.toString(),
   );
 
   Map<String, dynamic> toJson() => {

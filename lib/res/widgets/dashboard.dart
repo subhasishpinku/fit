@@ -1,7 +1,9 @@
 import 'package:aifitness/res/widgets/CustomDrawer.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/res/widgets/dashboardBody.dart';
+import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -87,7 +89,10 @@ class _DashboardState extends State<Dashboard> {
         //     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         //   ),
         // ),
-        body: const DashboardBody(),
+        body: ChangeNotifierProvider(
+          create: (_) => DashboardBodyViewModel(),
+          child: const DashboardBody(),
+        ),
 
         /// Bottom Navigation Bar
         // bottomNavigationBar: BottomNavigationBar(

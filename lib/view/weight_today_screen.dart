@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,8 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
           actions: [
             IconButton(
               icon: const Icon(Icons.close, color: Colors.black87),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () =>  Navigator.pushNamed(context, RouteNames.dashboard),
+              
             ),
           ],
         ),

@@ -1,14 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
+import 'package:aifitness/view/FullScreenVimeoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class VimeoPlayerScreen extends StatefulWidget {
   final String videoUrl;
   final double? height;
+  final bool enableFullscreen; // Add this parameter
 
-  const VimeoPlayerScreen({super.key, required this.videoUrl, this.height});
+  const VimeoPlayerScreen({
+    super.key, 
+    required this.videoUrl, 
+    this.height,
+    this.enableFullscreen = true, // Default to true
+  });
 
   @override
   State<VimeoPlayerScreen> createState() => _VimeoPlayerScreenState();
@@ -32,6 +36,17 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
     super.dispose();
   }
 
+  void _openFullscreen() {
+    if (widget.enableFullscreen) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FullScreenVimeoPage(videoUrl: widget.videoUrl),
+        ),
+      );
+    }
+  }
+
   void _initializePlayer() async {
     try {
       String videoId = _extractVimeoId(widget.videoUrl);
@@ -51,7 +66,6 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
       debugPrint("🎬 Vimeo Video ID: $videoId");
       debugPrint("🎬 Embed URL: $embedUrl");
 
-      // Enhanced HTML with better error handling
       final embedHtml = """
         <!DOCTYPE html>
         <html>
@@ -115,7 +129,6 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
                 return false;
               };
               
-              // Log when iframe loads
               document.querySelector('iframe').addEventListener('load', function() {
                 console.log('Vimeo iframe loaded');
               });
@@ -170,7 +183,6 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
           ),
         );
       
-      // Load HTML with proper base URL
       await controller.loadHtmlString(embedHtml, baseUrl: "https://player.vimeo.com");
       
     } catch (e) {
@@ -241,28 +253,48 @@ class _VimeoPlayerScreenState extends State<VimeoPlayerScreen> {
       );
     }
 
-    return Container(
-      height: widget.height ?? 200,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: WebViewWidget(controller: controller),
-          ),
-          if (_isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.7),
-              child: const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+    return GestureDetector(
+      onTap: _openFullscreen,
+      child: Container(
+        height: widget.height ?? 200,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: WebViewWidget(controller: controller),
+            ),
+            if (_isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.7),
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
                 ),
               ),
-            ),
-        ],
+            // Optional: Add a fullscreen icon overlay
+            if (widget.enableFullscreen && !_isLoading)
+              Positioned(
+                bottom: 8,
+                right: 8,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Icon(
+                    Icons.fullscreen,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -436,17 +436,17 @@ class Routes {
             child: SigninScreenTwentyFive(),
           ),
         );
-      case (RouteNames.dashboard):
-        return MaterialPageRoute(
-          builder: (BuildContext context) => const Dashboard(),
-        );
-      //  case RouteNames.dashboard:
+      // case (RouteNames.dashboard):
       //   return MaterialPageRoute(
-      //     builder: (_) => ChangeNotifierProvider(
-      //       create: (_) => SigninTwentyFiveViewModel(),
-      //       child: Dashboard(),
-      //     ),
+      //     builder: (BuildContext context) => const Dashboard(),
       //   );
+       case RouteNames.dashboard:
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => SigninTwentyFiveViewModel(),
+            child: Dashboard(),
+          ),
+        );
 
       // case (RouteNames.extraFoodIntakeScreen):
       //   return MaterialPageRoute(

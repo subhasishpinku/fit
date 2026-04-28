@@ -1,5 +1,6 @@
 import 'package:aifitness/viewModel/days_model.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../repository/view_plan_repository.dart';
 import '../view/NutritionPlanScreen.dart';
 
@@ -17,7 +18,10 @@ class ViewPlanViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchDays() async {
-    DaysModel? model = await repo.fetchDays(2858);
+    final prefs = await SharedPreferences.getInstance();
+    String deviceId = prefs.getString("device_id") ?? "123456";
+    int userId = prefs.getInt("user_id") ?? 0;
+    DaysModel? model = await repo.fetchDays(userId);
 
     if (model != null) {
       workoutDays = model.workoutDays;

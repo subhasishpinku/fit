@@ -6,7 +6,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
   final DashboardRepository _repo = DashboardRepository();
 
   bool isLoading = false;
-  
+
   // Add a flag to track if we're already loading
   bool _isLoadingDashboard = false;
   bool _isLoadingWalkingSteps = false;
@@ -40,7 +40,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
   Future<void> loadDashboard() async {
     // Prevent multiple simultaneous calls
     if (_isLoadingDashboard) return;
-    
+
     try {
       _isLoadingDashboard = true;
       isLoading = true;
@@ -62,7 +62,15 @@ class DashboardBodyViewModel extends ChangeNotifier {
         weekNumber = data.dayDetails?.week ?? 1;
         day = data.dayDetails?.day ?? "1";
         gender = data.userDetails?.gender ?? "";
+        final prefs = await SharedPreferences.getInstance();
 
+        // API data থেকে নেওয়া
+        // int weekNumber = data.dayDetails!.week ?? 1;
+        // String day = data.dayDetails!.day ?? "1";
+
+        // Save into prefs
+        await prefs.setInt("week", weekNumber);
+        await prefs.setString("day", day);
         weightData = _toDoubleList(data.latestWeightLogs);
         skeletalData = _toDoubleList(data.latestSkeletalMuscleLogs);
         bfpData = _toDoubleList(data.latestBodyFatPercentageLogs);
@@ -89,7 +97,6 @@ class DashboardBodyViewModel extends ChangeNotifier {
 
       // Call walking API without immediate notification
       await loadWalkingSteps(callNotify: false);
-      
     } catch (e) {
       print("ERROR = $e");
     } finally {
@@ -103,10 +110,10 @@ class DashboardBodyViewModel extends ChangeNotifier {
   Future<void> loadWalkingSteps({bool callNotify = true}) async {
     // Prevent multiple simultaneous calls
     if (_isLoadingWalkingSteps) return;
-    
+
     try {
       _isLoadingWalkingSteps = true;
-      
+
       final prefs = await SharedPreferences.getInstance();
       int userId = prefs.getInt("user_id") ?? 0;
 
@@ -132,26 +139,22 @@ class DashboardBodyViewModel extends ChangeNotifier {
     }
   }
 
-List<double> _toDoubleList(dynamic list) {
-  try {
-    if (list == null || list.isEmpty) return [];
+  List<double> _toDoubleList(dynamic list) {
+    try {
+      if (list == null || list.isEmpty) return [];
 
-    return List<double>.from(
-      list.map((e) {
-        final value =
-            e["log_value"] ??
-            e["value"] ??
-            e["weight"] ??
-            e["bfp"];
+      return List<double>.from(
+        list.map((e) {
+          final value = e["log_value"] ?? e["value"] ?? e["weight"] ?? e["bfp"];
 
-        final cleaned = value.toString().replaceAll(RegExp(r'[^0-9.]'), '');
+          final cleaned = value.toString().replaceAll(RegExp(r'[^0-9.]'), '');
 
-        return double.tryParse(cleaned) ?? 0;
-      }),
-    );
-  } catch (e) {
-    print("Parse Error = $e");
-    return [];
+          return double.tryParse(cleaned) ?? 0;
+        }),
+      );
+    } catch (e) {
+      print("Parse Error = $e");
+      return [];
+    }
   }
-}
 }

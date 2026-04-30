@@ -5,6 +5,7 @@ import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class SkeletalMuscleViewModel extends ChangeNotifier {
   final WeightRepository _repo = WeightRepository();
@@ -44,7 +45,7 @@ class SkeletalMuscleViewModel extends ChangeNotifier {
       print("historyList $logs");
       for (var log in logs) {
         _history.add(
-          WeightEntry(double.parse(log.logValue), DateTime.parse(log.logDate)),
+          WeightEntry(double.parse(log.logValue),   log.createdAtFormatted),
         );
       }
     } catch (e) {
@@ -90,10 +91,12 @@ class SkeletalMuscleViewModel extends ChangeNotifier {
       print("messageVie $message $userId $logValue $week $day $logType");
       // ---------------- HISTORY UPDATE ----------------
       final double? weight = double.tryParse(text);
+       final String times = timeago.format(DateTime.now());
       if (weight != null) {
-        _history.insert(0, WeightEntry(weight, DateTime.now()));
+        _history.insert(0, WeightEntry(weight, times));
         weightController.clear();
       }
+
 
       notifyListeners();
       final dashboardVM = context.read<DashboardBodyViewModel>();
@@ -148,6 +151,6 @@ class SkeletalMuscleViewModel extends ChangeNotifier {
 
 class WeightEntry {
   final double weight;
-  final DateTime time;
+  String time;
   WeightEntry(this.weight, this.time);
 }

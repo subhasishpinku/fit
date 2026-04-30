@@ -82,6 +82,5 @@ dependencies {
     // ✅ Required for Flutter plugins (Java 8+ APIs)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 
-    // ✅ 🔥 FIX: R8 missing class error
-    implementation("com.google.android.play:core:1.10.3")
+   
 }

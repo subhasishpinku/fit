@@ -26,7 +26,7 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
       Provider.of<WeightTodayViewModel>(context, listen: false).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
-        day: "8",
+        day: day,
         logType: "weight",
       );
     });
@@ -47,8 +47,8 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
           actions: [
             IconButton(
               icon: const Icon(Icons.close, color: Colors.black87),
-              onPressed: () =>  Navigator.pushNamed(context, RouteNames.dashboard),
-              
+              onPressed: () =>
+                  Navigator.pushNamed(context, RouteNames.dashboard),
             ),
           ],
         ),
@@ -100,7 +100,7 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
                           controller: viewModel.weightController,
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
-                            hintText: "Enter your weight (kg)",
+                            hintText: "Enter your current weight(kg)",
                             hintStyle: TextStyle(color: Colors.grey),
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 14,
@@ -186,6 +186,8 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
 
                             // Optional: Clear input field after successfully submitting
                             viewModel.weightController.clear();
+                            // Navigator.pushNamed(context, RouteNames.weightTodayScreen);
+                            // Navigator.pushReplacementNamed(context, RouteNames.weightTodayScreen);
                           },
 
                           child: const Text(
@@ -270,7 +272,7 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
                                       ),
                                     ),
                                     Text(
-                                      timeago.format(entry.time),
+                                      entry.time,
                                       style: const TextStyle(
                                         color: Colors.grey,
                                         fontSize: 12,
@@ -278,7 +280,14 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 6),
+                                const SizedBox(height: 1),
+                                Divider(
+                                  color: Colors.grey,
+                                  thickness: 1.5,
+                                  height: 20, // space above & below
+                                  indent: 1, // left spacing
+                                  endIndent: 1, // right spacing
+                                ),
 
                                 /// WEIGHT DETAILS
                                 Row(
@@ -292,14 +301,14 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    IconButton(
-                                      onPressed: () =>
-                                          viewModel.deleteWeight(index),
-                                      icon: const Icon(
-                                        Icons.delete_outline,
-                                        color: Colors.redAccent,
-                                      ),
-                                    ),
+                                    // IconButton(
+                                    //   onPressed: () =>
+                                    //       viewModel.deleteWeight(index),
+                                    //   icon: const Icon(
+                                    //     Icons.delete_outline,
+                                    //     color: Colors.redAccent,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ],

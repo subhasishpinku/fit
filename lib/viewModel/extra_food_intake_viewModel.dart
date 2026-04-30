@@ -20,7 +20,7 @@ class ExtraFoodIntakeViewModel extends ChangeNotifier {
   List<WrongDietItem> get intakeHistory => _intakeHistory;
   String message = "";
   String errorMessage = "";
-
+  String currentWeek = "";
   Future<void> submitWrongDiet({
     required int userId,
     required String week,
@@ -68,9 +68,12 @@ class ExtraFoodIntakeViewModel extends ChangeNotifier {
   Future<void> fetchWrongDietHistory(String week, int userId) async {
     try {
       _loading = true;
+      currentWeek = week; // ✅ এখানে save করো
+
       notifyListeners();
 
       final result = await _repo1.getWrongDietHistory(week, userId);
+      print("fetchWrongDietHistory $week $userId");
 
       if (result.success) {
         _intakeHistory = result.data;

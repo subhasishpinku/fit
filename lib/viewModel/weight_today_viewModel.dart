@@ -4,6 +4,7 @@ import 'package:aifitness/repository/WeightRepository.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class WeightTodayViewModel extends ChangeNotifier {
   final WeightRepository _repo = WeightRepository();
@@ -40,13 +41,17 @@ class WeightTodayViewModel extends ChangeNotifier {
         "day": day,
         "log_type": logType,
       });
-
+      print(
+        "Params -> user_id: $userId, week: $week, day: $day, log_type: $logType",
+      );
       _history.clear();
+
       for (var log in logs) {
+        print("Readable time: ${log.createdAtFormatted}");
         _history.add(
           WeightEntry(
             double.tryParse(log.logValue) ?? 0.0,
-            DateTime.tryParse(log.logDate) ?? DateTime.now(),
+            log.createdAtFormatted,
           ),
         );
       }
@@ -86,13 +91,17 @@ class WeightTodayViewModel extends ChangeNotifier {
         "day": day,
         "log_type": logType,
       });
-
+      print(
+        "ParamsaddWeightLog -> user_id: $userId, week: $week, day: $day, log_type: $logType log_value: $logValue",
+      );
       message = response.message ?? "Weight updated successfully";
+      
       minValueForWeek = response.minValueForWeek;
-
+      print("timeValueWeight $minValueForWeek");
       final weight = double.tryParse(text);
+      final String times = timeago.format(DateTime.now());
       if (weight != null) {
-        _history.insert(0, WeightEntry(weight, DateTime.now()));
+        _history.insert(0, WeightEntry(weight, times));
         weightController.clear();
       }
 
@@ -151,6 +160,6 @@ class WeightTodayViewModel extends ChangeNotifier {
 
 class WeightEntry {
   final double weight;
-  final DateTime time;
+  String time;
   WeightEntry(this.weight, this.time);
 }

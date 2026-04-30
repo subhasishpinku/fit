@@ -24,6 +24,7 @@ class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
     final prefs = await SharedPreferences.getInstance();
     int userId = prefs.getInt("user_id") ?? 0;
     int week = prefs.getInt("week") ?? 0;
+    String day = prefs.getString("day") ?? "8";
 
     Provider.of<ExtraFoodIntakeViewModel>(
       context,
@@ -76,7 +77,7 @@ class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
                   controller: viewModel.intakeController,
                   maxLines: 6,
                   decoration: InputDecoration(
-                    hintText: "Describe extra food or calories consumed...",
+                    hintText: "",
                     contentPadding: const EdgeInsets.all(12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -116,11 +117,12 @@ class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
                         final prefs = await SharedPreferences.getInstance();
                         int userId = prefs.getInt("user_id") ?? 0;
                         int week = prefs.getInt("week") ?? 0;
+                        String day = prefs.getString("day") ?? "8";
 
                         await viewModel.submitWrongDiet(
                           userId: userId,
                           week: week.toString(),
-                          day: "8",
+                          day: day,
                         );
 
                         viewModel.intakeController.clear();
@@ -162,9 +164,10 @@ class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
                       vertical: 15,
                     ),
                   ),
-                  child: const Text(
-                    "Week 3 Extra Food Intake History",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  child: Text(
+                    viewModel.intakeHistory.isNotEmpty
+                        ? "Week ${viewModel.intakeHistory.first.week} Extra Food Intake History"
+                        : "Extra Food Intake History",
                   ),
                 ),
               ),

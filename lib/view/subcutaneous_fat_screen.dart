@@ -28,7 +28,7 @@ class _SubcutaneousFatScreenState extends State<SubcutaneousFatScreen> {
       ).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
-        day: "8",
+        day: day,
         logType: "subcutaneous_fat",
       );
     });
@@ -180,7 +180,7 @@ class _SubcutaneousFatScreenState extends State<SubcutaneousFatScreen> {
                               userId: userId,
                               logValue: weightText,
                               week: week.toString(),
-                              day: "8",
+                              day: day,
                               logType: "subcutaneous_fat",
                             );
 
@@ -308,7 +308,7 @@ class _SubcutaneousFatScreenState extends State<SubcutaneousFatScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Weight: ${entry.weight} Kg",
+                                      "${entry.weight}%",
                                       style: const TextStyle(
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.bold,

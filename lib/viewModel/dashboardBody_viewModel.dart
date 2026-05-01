@@ -60,7 +60,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
 
       if (data != null) {
         weekNumber = data.dayDetails?.week ?? 1;
-        day = data.dayDetails?.day ?? "1";
+        day = data.dayDetails?.dayId.toString() ?? "1";
         gender = data.userDetails?.gender ?? "";
         final prefs = await SharedPreferences.getInstance();
 
@@ -71,6 +71,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
         // Save into prefs
         await prefs.setInt("week", weekNumber);
         await prefs.setString("day", day);
+        print("Saved Week: $weekNumber, Day: $day");
         weightData = _toDoubleList(data.latestWeightLogs);
         skeletalData = _toDoubleList(data.latestSkeletalMuscleLogs);
         bfpData = _toDoubleList(data.latestBodyFatPercentageLogs);

@@ -40,14 +40,13 @@ class BodyFatViewModel extends ChangeNotifier {
         "day": day,
         "log_type": logType,
       });
+      print("messageVie $userId $week $day $week $day $logType");
 
       _history.clear();
       print("historyList $logs");
       for (var log in logs) {
         _history.add(
-          WeightEntry(double.parse(log.logValue), 
-                      log.createdAtFormatted,
-),
+          WeightEntry(double.parse(log.logValue), log.createdAtFormatted),
         );
       }
     } catch (e) {
@@ -93,7 +92,7 @@ class BodyFatViewModel extends ChangeNotifier {
       print("messageVie $message $userId $logValue $week $day $logType");
       // ---------------- HISTORY UPDATE ----------------
       final double? weight = double.tryParse(text);
-    final String times = timeago.format(DateTime.now());
+      final String times = timeago.format(DateTime.now());
       if (weight != null) {
         _history.insert(0, WeightEntry(weight, times));
         weightController.clear();

@@ -25,7 +25,7 @@ class _VisceralFatScreenState extends State<VisceralFatScreen> {
       Provider.of<VisceralFatViewModel>(context, listen: false).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
-        day: "8",
+        day: day,
         logType: "visceral_fat_level",
       );
     });
@@ -177,7 +177,7 @@ class _VisceralFatScreenState extends State<VisceralFatScreen> {
                               userId: userId,
                               logValue: weightText,
                               week: week.toString(),
-                              day: "8",
+                              day: day,
                               logType: "visceral_fat_level",
                             );
 
@@ -305,7 +305,7 @@ class _VisceralFatScreenState extends State<VisceralFatScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Weight: ${entry.weight} Kg",
+                                      "${entry.weight}",
                                       style: const TextStyle(
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.bold,

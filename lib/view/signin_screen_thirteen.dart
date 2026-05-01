@@ -337,107 +337,105 @@ class FatLossContent extends StatelessWidget {
     );
   }
 
-Future<dynamic> showWellnessDialog(BuildContext context) {
-  final vm = Provider.of<SigninThirteenViewModel>(context, listen: false);
-  final data = vm.fatLossData;
+  Future<dynamic> showWellnessDialog(BuildContext context) {
+    final vm = Provider.of<SigninThirteenViewModel>(context, listen: false);
+    final data = vm.fatLossData;
 
-  // -------- SAFE PARSING --------
-  final goalPercent =
-      double.tryParse(data?['target_bfp']?.toString() ?? '') ?? 0;
+    // -------- SAFE PARSING --------
+    final goalPercent =
+        double.tryParse(data?['target_bfp']?.toString() ?? '') ?? 0;
 
-  final idealWeight =
-      double.tryParse(data?['target_weight']?.toString() ?? '') ?? 0;
+    final idealWeight =
+        double.tryParse(data?['target_weight']?.toString() ?? '') ?? 0;
 
-  final currentWeight =
-      double.tryParse(data?['current_weight_value']?.toString() ?? '') ?? 0;
+    final currentWeight =
+        double.tryParse(data?['current_weight_value']?.toString() ?? '') ?? 0;
 
-  return showDialog(
-    context: context,
-    builder: (context) {
-      return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.white,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/images/wellness.png',
-                height: 60,
-                fit: BoxFit.contain,
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Colors.white,
               ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/images/wellness.png',
+                    height: 60,
+                    fit: BoxFit.contain,
+                  ),
 
-              const SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
-              const Text(
-                "Wellness Guidance",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+                  const Text(
+                    "Wellness Guidance",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
 
-              const SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
-              // ✅ DYNAMIC TEXT
-              Text(
-                "Based on your selected body fat goal (${goalPercent.toStringAsFixed(0)}%), "
-                "your estimated ideal weight is ${idealWeight.toStringAsFixed(2)} kg, "
-                "while your current weight is ${currentWeight.toStringAsFixed(1)} kg, "
-                "which is below your ideal level.\n\n"
+                  // ✅ DYNAMIC TEXT
+                  Text(
+                    "Based on your selected body fat goal (${goalPercent.toStringAsFixed(0)}%), "
+                    "your estimated ideal weight is ${idealWeight.toStringAsFixed(2)} kg, "
+                    "while your current weight is ${currentWeight.toStringAsFixed(1)} kg, "
+                    "which is below your ideal level.\n\n"
+                    "This indicates that further weight loss is not advisable, "
+                    "as it may negatively impact your overall health, strength, and energy levels.\n\n"
+                    "Instead, you should focus on maintaining or gradually increasing your weight "
+                    "to reach a healthier range aligned with your body fat goal. "
+                    "Prioritizing a balanced diet with adequate calories, sufficient protein intake, "
+                    "and regular strength training will help you build lean muscle and improve your body composition.",
 
-                "This indicates that further weight loss is not advisable, "
-                "as it may negatively impact your overall health, strength, and energy levels.\n\n"
-
-                "Instead, you should focus on maintaining or gradually increasing your weight "
-                "to reach a healthier range aligned with your body fat goal. "
-                "Prioritizing a balanced diet with adequate calories, sufficient protein intake, "
-                "and regular strength training will help you build lean muscle and improve your body composition.",
-
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Colors.black87,
-                  height: 1.4,
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.blue,
-                    elevation: 0,
-                    side: const BorderSide(color: Colors.blue),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.black87,
+                      height: 1.4,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, RouteNames.signinScreen);
-                  },
-                  child: const Text(
-                    "Change your workout plan",
-                    style: TextStyle(fontWeight: FontWeight.w600),
+
+                  const SizedBox(height: 20),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.blue,
+                        elevation: 0,
+                        side: const BorderSide(color: Colors.blue),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, RouteNames.signinScreen);
+                      },
+                      child: const Text(
+                        "Change your workout plan",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 }

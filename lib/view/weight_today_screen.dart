@@ -180,7 +180,7 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
                               userId: userId,
                               logValue: weightText,
                               week: week.toString(),
-                              day: "8",
+                              day: day,
                               logType: "weight",
                             );
 

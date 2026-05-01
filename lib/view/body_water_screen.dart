@@ -25,7 +25,7 @@ class _BodyWaterScreenState extends State<BodyWaterScreen> {
       Provider.of<BodyWaterViewModel>(context, listen: false).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
-        day: "8",
+        day: day,
         logType: "total_body_water",
       );
     });
@@ -177,7 +177,7 @@ class _BodyWaterScreenState extends State<BodyWaterScreen> {
                               userId: userId,
                               logValue: weightText,
                               week: week.toString(),
-                              day: "8",
+                              day: day,
                               logType: "total_body_water",
                             );
 
@@ -290,7 +290,7 @@ class _BodyWaterScreenState extends State<BodyWaterScreen> {
                                     ),
                                   ],
                                 ),
-                                 const SizedBox(height: 1),
+                                const SizedBox(height: 1),
                                 Divider(
                                   color: Colors.grey,
                                   thickness: 1.5,
@@ -305,7 +305,7 @@ class _BodyWaterScreenState extends State<BodyWaterScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Weight: ${entry.weight} Kg",
+                                      "Today Body Water: ${entry.weight}%",
                                       style: const TextStyle(
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.bold,

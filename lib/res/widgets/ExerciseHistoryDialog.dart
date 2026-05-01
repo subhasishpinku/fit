@@ -208,9 +208,7 @@ class ExerciseHistoryDialog extends StatelessWidget {
       textDirection: TextDirection.ltr,
       child: Dialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Consumer<ExerciseTrackerViewModel>(
           builder: (context, vm, child) {
             if (vm.loading) {
@@ -277,10 +275,7 @@ class ExerciseHistoryDialog extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
 
-                        const Icon(
-                          Icons.playlist_add_check_rounded,
-                          size: 80,
-                        ),
+                        const Icon(Icons.playlist_add_check_rounded, size: 80),
                         const SizedBox(height: 8),
 
                         Text(
@@ -315,20 +310,35 @@ class ExerciseHistoryDialog extends StatelessWidget {
                         Container(height: 1, color: Colors.black),
                         const SizedBox(height: 12),
 
+                        // _buildSetCard(
+                        //   title: "Set 1 (Warm-Up Set)",
+                        //   weight: item.set1?.weight?.toString() ?? "-",
+                        //   reps: item.set1?.reps?.toString() ?? "-",
+                        // ),
                         _buildSetCard(
                           title: "Set 1 (Warm-Up Set)",
-                          weight: item.set1.weight.toString(),
-                          reps: item.set1.reps.toString(),
+                          weight: item.set1?.weight,
+                          reps: item.set1?.reps,
                         ),
+                        // _buildSetCard(
+                        //   title: "Set 2 (Failure Set)",
+                        //   weight: item.set2?.weight?.toString() ?? "-",
+                        //   reps: item.set2?.reps?.toString() ?? "-",
+                        // ),
                         _buildSetCard(
                           title: "Set 2 (Failure Set)",
-                          weight: item.set2.weight.toString(),
-                          reps: item.set2.reps.toString(),
+                          weight: item.set2?.weight,
+                          reps: item.set2?.reps,
                         ),
+                        // _buildSetCard(
+                        //   title: "Set 3 (Pump Set)",
+                        //   weight: item.set3?.weight?.toString() ?? "-",
+                        //   reps: item.set3?.reps?.toString() ?? "-",
+                        // ),
                         _buildSetCard(
                           title: "Set 3 (Pump Set)",
-                          weight: item.set3.weight.toString(),
-                          reps: item.set3.reps.toString(),
+                          weight: item.set3?.weight,
+                          reps: item.set3?.reps,
                         ),
                       ],
                     ),
@@ -363,8 +373,55 @@ class ExerciseHistoryDialog extends StatelessWidget {
     );
   }
 
+  Widget _buildSetCard({required String title, int? weight, int? reps}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Text(
+            title,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+          color: const Color(0xfff3f3f3),
+          child: Row(
+            children: [
+              const Text("Weight:", style: TextStyle(fontSize: 14)),
+              const SizedBox(width: 10),
+              Text(
+                weight?.toString() ?? "-",
+                style: const TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+          color: const Color(0xfff3f3f3),
+          child: Row(
+            children: [
+              const Text("REPS:", style: TextStyle(fontSize: 14)),
+              const SizedBox(width: 10),
+              Text(
+                reps?.toString() ?? "-",
+                style: const TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 14),
+      ],
+    );
+  }
+
   /// Set UI Card
-  Widget _buildSetCard({
+  Widget _buildSetCard1({
     required String title,
     required String weight,
     required String reps,
@@ -376,10 +433,7 @@ class ExerciseHistoryDialog extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 6),
           child: Text(
             title,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
         ),
         Container(

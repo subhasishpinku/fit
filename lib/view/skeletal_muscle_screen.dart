@@ -28,7 +28,7 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
       ).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
-        day: "8",
+        day: day,
         logType: "skeletal_muscle",
       );
     });
@@ -180,7 +180,7 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
                               userId: userId,
                               logValue: weightText,
                               week: week.toString(),
-                              day: "8",
+                              day: day,
                               logType: "skeletal_muscle",
                             );
 
@@ -308,7 +308,7 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Weight: ${entry.weight} Kg",
+                                      "SMM: ${entry.weight}%",
                                       style: const TextStyle(
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.bold,

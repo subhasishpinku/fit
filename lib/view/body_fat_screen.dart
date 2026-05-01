@@ -25,7 +25,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
       Provider.of<BodyFatViewModel>(context, listen: false).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
-        day: "8",
+        day: day,
         logType: "body_fat_percentage",
       );
     });
@@ -178,7 +178,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
                               userId: userId,
                               logValue: weightText,
                               week: week.toString(),
-                              day: "8",
+                              day: day,
                               logType: "body_fat_percentage",
                             );
 
@@ -306,7 +306,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Weight: ${entry.weight} Kg",
+                                      "BFP: ${entry.weight}%",
                                       style: const TextStyle(
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.bold,

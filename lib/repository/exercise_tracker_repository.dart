@@ -11,7 +11,7 @@ class ExerciseTrackerRepository {
       "user_id": userId,
       "exercise_id": exerciseId,
     });
-
+     print("ai-get-exercise-tracker $userId  $exerciseId");
     List data = response.data["data"];
     return data.map((item) => ExerciseTrackerModel.fromJson(item)).toList();
   }

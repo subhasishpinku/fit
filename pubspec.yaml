@@ -200,6 +200,83 @@ flutter:
     - assets/images/avtarMale/male_avtar10.png
     - assets/images/wellness.png
 
+    - assets/images/device/allmeserment.png
+    - assets/images/device/aroowleft.png
+    - assets/images/device/backgroundjk.png
+    - assets/images/device/group1000001142.png
+    - assets/images/device/member.png
+    - assets/images/device/startfitness.png
+
+    - assets/images/deviceicons/appOnly/appOnly.png
+    - assets/images/deviceicons/appOnly/Contents.json
+    - assets/images/deviceicons/appWeight/device1.png
+    - assets/images/deviceicons/appWeight/Contents.json
+    - assets/images/deviceicons/weightScale/cggdeviceLogo.png
+    - assets/images/deviceicons/weightScale/Contents.json
+    - assets/images/deviceicons/Contents.json
+
+
+    # - assets/images/DeviceMat/BMI/BMI.png
+    # - assets/images/DeviceMat/BMI/Contents.json
+    # - assets/images/DeviceMat/BMI/BMI.png
+    # - assets/images/DeviceMat/BMR/BMR.png
+    # - assets/images/DeviceMat/bodyAge/bodyAge.png
+    # - assets/images/DeviceMat/bodyCellMass/bodyCellMass.png
+    # - assets/images/DeviceMat/bodyType/bodyType.png
+    # - assets/images/DeviceMat/boneMass/boneMass.png
+    # - assets/images/DeviceMat/extracellularWater/extracellularWater.png
+    # - assets/images/DeviceMat/fatControl/fatControl.png
+    # - assets/images/DeviceMat/fatfreeMass/fatfreeMass.png
+    # - assets/images/DeviceMat/fatMass/fatMass.png
+    # - assets/images/DeviceMat/fatRatio/fatRatio.png
+    # - assets/images/DeviceMat/healthEvaluation/healthEvaluation.png
+    # - assets/images/DeviceMat/healthScore/healthScore.png
+    # - assets/images/DeviceMat/heartRate/heartRate.png
+    # - assets/images/DeviceMat/idealWeight/idealWeight.png
+    # - assets/images/DeviceMat/leftArmFatMass/leftArmFatMass.png
+    # - assets/images/DeviceMat/leftArmFatRatio/leftArmFatRatio.png
+    # - assets/images/DeviceMat/leftArmMuscleMass/leftArmMuscleMass.png
+    # - assets/images/DeviceMat/leftArmMuscleRate/leftArmMuscleRate.png
+    # - assets/images/DeviceMat/leftFootMuscleRate/leftFootMuscleRate.png
+    # - assets/images/DeviceMat/leftLegFatMass/leftLegFatMass.png
+    # - assets/images/DeviceMat/leftLegFatRatio/leftLegFatRatio.png
+    # - assets/images/DeviceMat/leftlegMuscleMas/leftlegMuscleMas.png
+    # - assets/images/DeviceMat/minerals/minerals.png
+    # - assets/images/DeviceMat/muscleControl/muscleControl.png
+    # - assets/images/DeviceMat/muscleMass/muscleMass.png
+    # - assets/images/DeviceMat/muscleRate/muscleRate.png
+    # - assets/images/DeviceMat/obesityDegree/obesityDegree.png
+    # - assets/images/DeviceMat/obesityLevel/obesityLevel.png
+    # - assets/images/DeviceMat/proteinMass/proteinMass.png
+    # - assets/images/DeviceMat/proteinRation/proteinRation.png
+    # - assets/images/DeviceMat/recommendedCalorieIntake/recommendedCalorieIntake.png
+    # - assets/images/DeviceMat/rightArmFatMass/rightArmFatMass.png
+    # - assets/images/DeviceMat/rightArmFatRatio/rightArmFatRatio.png
+    # - assets/images/DeviceMat/rightArmMuscleMass/rightArmMuscleMass.png
+    # - assets/images/DeviceMat/rightArmMuscleRate/rightArmMuscleRate.png
+    # - assets/images/DeviceMat/rightFootMuscleRate/rightFootMuscleRate.png
+    # - assets/images/DeviceMat/rightLegFatMass/rightLegFatMass.png
+    # - assets/images/DeviceMat/rightLegFatRatio/rightLegFatRatio.png
+    # - assets/images/DeviceMat/rightlegMuscleMass/rightlegMuscleMass.png
+    # - assets/images/DeviceMat/skeletalMuscleMass/skeletalMuscleMass.png
+    # - assets/images/DeviceMat/skeletalMuscleQualityIndex/skeletalMuscleQualityIndex.png
+    # - assets/images/DeviceMat/skeletalMuscleRatio/skeletalMuscleRatio.png
+    # - assets/images/DeviceMat/standardWeight/standardWeight.png
+    # - assets/images/DeviceMat/subcutaneousFatMass/subcutaneousFatMass.png
+    # - assets/images/DeviceMat/subcutaneousFatRatio/subcutaneousFatRatio.png
+    # - assets/images/DeviceMat/totalBodyWater/totalBodyWater.png
+    # - assets/images/DeviceMat/trunkFatMass/trunkFatMass.png
+    # - assets/images/DeviceMat/trunkFatPercentage/trunkFatPercentage.png
+    # - assets/images/DeviceMat/trunkMuscleMass/trunkMuscleMass.png
+    # - assets/images/DeviceMat/trunkMuscleRate/trunkMuscleRate.png
+    # - assets/images/DeviceMat/visceralFat.imageset/visceralFat.png
+    # - assets/images/DeviceMat/waisthipRatio/waisthipRatio.png
+    # - assets/images/DeviceMat/waterInt/waterInt.png
+    # - assets/images/DeviceMat/waterRatio/waterRatio.png
+    # - assets/images/DeviceMat/weight/weight.png
+    # - assets/images/DeviceMat/weightControl/weightControl.png
+
+
 
 
 

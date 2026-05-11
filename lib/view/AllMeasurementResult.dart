@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class AllMeasurementResult extends StatelessWidget {
@@ -30,7 +31,7 @@ class AllMeasurementResult extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(
                     context,
-                    '/measurement-result',
+                    RouteNames.measurementResult,
                     arguments: {
                       'dateTime': "14-02-2026 3:12 pm",
                       'weight': "63.50",
@@ -49,7 +50,7 @@ class AllMeasurementResult extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(
                     context,
-                    '/measurement-result',
+                    RouteNames.measurementResult,
                     arguments: {
                       'dateTime': "18-02-2026 6:20 pm",
                       'weight': "65.35",
@@ -68,7 +69,7 @@ class AllMeasurementResult extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(
                     context,
-                    '/measurement-result',
+                    RouteNames.measurementResult,
                     arguments: {
                       'dateTime': "22-02-2026 9:15 am",
                       'weight': "64.20",
@@ -124,11 +125,17 @@ class MeasurementCard extends StatelessWidget {
             // Icon
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10),
+              // decoration: BoxDecoration(
+              //   color: Colors.grey[200],
+              //   borderRadius: BorderRadius.circular(10),
+              // ),
+              // child: const Icon(Icons.monitor_weight, size: 28),
+              child: Image.asset(
+                'assets/images/device.png',
+                width: 28,
+                height: 28,
+                fit: BoxFit.contain,
               ),
-              child: const Icon(Icons.monitor_weight, size: 28),
             ),
 
             const SizedBox(width: 12),

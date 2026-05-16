@@ -9,6 +9,7 @@ import 'package:aifitness/view/ContactUs.dart';
 import 'package:aifitness/view/DeviceDashboard.dart';
 import 'package:aifitness/view/FitNetwork.dart';
 import 'package:aifitness/view/MeasurementResult.dart';
+import 'package:aifitness/view/MemberProfile.dart';
 import 'package:aifitness/view/PrivacyPolicy.dart';
 import 'package:aifitness/view/Target_change_screen.dart';
 import 'package:aifitness/view/Visceral_fat_screen.dart';
@@ -84,6 +85,7 @@ import 'package:aifitness/viewModel/bodyfat_ViewModel.dart';
 import 'package:aifitness/viewModel/change_details_viewModel.dart';
 import 'package:aifitness/viewModel/contact_us_viewModel.dart';
 import 'package:aifitness/viewModel/current_bfp_ViewModel.dart';
+import 'package:aifitness/viewModel/device_dashboard_ViewModel.dart';
 import 'package:aifitness/viewModel/diet_type_ViewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_viewModel.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
@@ -93,6 +95,7 @@ import 'package:aifitness/viewModel/hight_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_final_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
+import 'package:aifitness/viewModel/member_profile_viewModel.dart';
 import 'package:aifitness/viewModel/nutration_screen_viewModel.dart';
 import 'package:aifitness/viewModel/privacy_policy_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_eighteen_viewModel.dart';
@@ -861,17 +864,24 @@ class Routes {
       //       child: WalkingStepsTodays(),
       //     ),
       //   );
-      case (RouteNames.deviceDashboard):
-        return MaterialPageRoute(
-          builder: (BuildContext context) => const DeviceDashboard(),
-        );
-      // case RouteNames.deviceDashboard:
+      // case (RouteNames.deviceDashboard):
       //   return MaterialPageRoute(
-      //     builder: (_) => ChangeNotifierProvider(
-      //       create: (_) => WalkingStepsViewModel(),
-      //       child: DeviceDashboard(),
-      //     ),
-      // );
+      //     builder: (BuildContext context) => const DeviceDashboard(),
+      //   );
+      case RouteNames.deviceDashboard:
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => DeviceDashboardViewModel(),
+            child: DeviceDashboard(),
+          ),
+      );
+      case RouteNames.memberProfile:
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => MemberProfileViewModel(),
+            child: MemberProfile(),
+          ),
+      );
       case (RouteNames.allMeasurementResult):
         return MaterialPageRoute(
           builder: (BuildContext context) => const AllMeasurementResult(),

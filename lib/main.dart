@@ -28,6 +28,7 @@ import 'package:aifitness/viewModel/change_details_viewModel.dart';
 import 'package:aifitness/viewModel/contact_us_viewModel.dart';
 import 'package:aifitness/viewModel/current_bfp_ViewModel.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
+import 'package:aifitness/viewModel/device_dashboard_ViewModel.dart';
 import 'package:aifitness/viewModel/diet_type_ViewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_details_viewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_viewModel.dart';
@@ -39,6 +40,7 @@ import 'package:aifitness/viewModel/hight_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_final_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
+import 'package:aifitness/viewModel/member_profile_viewModel.dart';
 import 'package:aifitness/viewModel/nutration_screen_viewModel.dart';
 import 'package:aifitness/viewModel/nutrition_plan_viewmodel.dart';
 import 'package:aifitness/viewModel/privacy_policy_viewModel.dart';
@@ -183,6 +185,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(create: (_) => AddMealViewModel()),
         ChangeNotifierProvider(create: (_) => WalkingStepsViewModel()),
+        ChangeNotifierProvider(create: (_) => DeviceDashboardViewModel()),
+        ChangeNotifierProvider(create: (_) => MemberProfileViewModel())
+
       ],
       child: const MyApp(),
     ),

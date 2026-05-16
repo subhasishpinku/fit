@@ -70,5 +70,6 @@ class RouteNames {
 
   static const String measurementResult = "Measurement_result";
   static const String getStartScreenView = "get_start_screen_view";
+  static const String memberProfile = "member_profile";
 
 }

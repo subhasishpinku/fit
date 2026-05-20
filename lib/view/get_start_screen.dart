@@ -150,7 +150,7 @@ class _GetStartScreenState extends State<GetStartScreen> {
         _buildOptionCard(
           index: 0,
           title: "Smart Scale Only",
-          subtitle: "For weight & health tracking",
+          subtitle: "Select how you'd like to use FitAmplify",
           features: const [
             "Auto weight sync with smart scale",
             "Complete weight history & trends",
@@ -165,13 +165,13 @@ class _GetStartScreenState extends State<GetStartScreen> {
         _buildOptionCard(
           index: 1,
           title: "Complete Experience",
-          subtitle: "Diet & Exercise Planner",
+          subtitle: "Smart Scale + Diet & Exercise Planner",
           features: const [
             "Auto weight sync with smart scale",
             "Personalized diet & exercise plans",
             "Advanced AI-powered analytics",
             "Body composition analysis",
-            "⚠ Single user supported",
+            "Single user supported",
           ],
         ),
       ],

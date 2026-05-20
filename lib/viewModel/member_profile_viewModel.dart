@@ -1,5 +1,6 @@
 import 'package:aifitness/data/network/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/member_profile_model.dart';
 
@@ -16,12 +17,11 @@ class MemberProfileViewModel extends ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
-
+      final prefs = await SharedPreferences.getInstance();
+      String? deviceId = prefs.getString("device_id");
       final response = await _apiService.postRequest(
         "get-all-machine-profiles",
-        {
-          "device_id": "123456jhg",
-        },
+        {"device_id": deviceId},
       );
 
       final data = response.data;
@@ -29,10 +29,9 @@ class MemberProfileViewModel extends ChangeNotifier {
       if (data["success"] == true) {
         final List profileList = data["data"];
 
-        profiles =
-            profileList
-                .map((e) => MemberProfileModel.fromJson(e))
-                .toList();
+        profiles = profileList
+            .map((e) => MemberProfileModel.fromJson(e))
+            .toList();
 
         /// machine_profile_active == 1 selected
         final activeIndex = profiles.indexWhere(

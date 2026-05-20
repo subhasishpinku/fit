@@ -4,6 +4,7 @@ import 'package:aifitness/repository/supplement_repository.dart';
 import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/AboutsUs.dart';
+import 'package:aifitness/view/AddMember.dart';
 import 'package:aifitness/view/AllMeasurementResult.dart';
 import 'package:aifitness/view/ContactUs.dart';
 import 'package:aifitness/view/DeviceDashboard.dart';
@@ -79,6 +80,7 @@ import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:aifitness/viewModel/activity_level_viewModel.dart';
 import 'package:aifitness/viewModel/add_meal_viewmodel.dart';
+import 'package:aifitness/viewModel/all_measurement_result_ViewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
 import 'package:aifitness/viewModel/body_water_view_model.dart';
 import 'package:aifitness/viewModel/bodyfat_ViewModel.dart';
@@ -443,7 +445,7 @@ class Routes {
       //   return MaterialPageRoute(
       //     builder: (BuildContext context) => const Dashboard(),
       //   );
-       case RouteNames.dashboard:
+      case RouteNames.dashboard:
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider(
             create: (_) => SigninTwentyFiveViewModel(),
@@ -874,18 +876,30 @@ class Routes {
             create: (_) => DeviceDashboardViewModel(),
             child: DeviceDashboard(),
           ),
-      );
+        );
+      case RouteNames.addMember:
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => AddMealViewModel(),
+            child: AddMember(),
+          ),
+        );
       case RouteNames.memberProfile:
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider(
             create: (_) => MemberProfileViewModel(),
             child: MemberProfile(),
           ),
-      );
-      case (RouteNames.allMeasurementResult):
-        return MaterialPageRoute(
-          builder: (BuildContext context) => const AllMeasurementResult(),
         );
+
+      case RouteNames.allMeasurementResult:
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => AllMeasurementResultViewmodel(),
+            child: AllMeasurementResult(),
+          ),
+        );
+
       case (RouteNames.measurementResult):
         return MaterialPageRoute(
           builder: (BuildContext context) => const MeasurementResult(),

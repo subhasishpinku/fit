@@ -3,6 +3,7 @@ import 'package:aifitness/repository/supplement_repository.dart';
 import 'package:aifitness/utils/routes/routes.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/utils/shared_prefs_helper.dart';
+import 'package:aifitness/view/AddMember.dart';
 import 'package:aifitness/view/Target_change_screen.dart';
 import 'package:aifitness/view/body_image_progress.dart';
 import 'package:aifitness/view/body_water_screen.dart';
@@ -20,6 +21,7 @@ import 'package:aifitness/viewModel/account_delete_ViewModel.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:aifitness/viewModel/activity_level_viewModel.dart';
 import 'package:aifitness/viewModel/add_meal_viewmodel.dart';
+import 'package:aifitness/viewModel/all_measurement_result_ViewModel.dart';
 import 'package:aifitness/viewModel/begin_your_viewModel.dart';
 import 'package:aifitness/viewModel/body_fat_viewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
@@ -186,7 +188,9 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AddMealViewModel()),
         ChangeNotifierProvider(create: (_) => WalkingStepsViewModel()),
         ChangeNotifierProvider(create: (_) => DeviceDashboardViewModel()),
-        ChangeNotifierProvider(create: (_) => MemberProfileViewModel())
+        ChangeNotifierProvider(create: (_) => MemberProfileViewModel()),
+        ChangeNotifierProvider(create: (_) => AddMealViewModel()),
+        ChangeNotifierProvider(create: (_) => AllMeasurementResultViewmodel())
 
       ],
       child: const MyApp(),

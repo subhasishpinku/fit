@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:aifitness/data/network/api_service.dart';
 import 'package:aifitness/models/device_profile_model.dart';
 import 'package:aifitness/models/weight_summary_model.dart';
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 // class DeviceDashboardViewModel extends ChangeNotifier {
@@ -131,9 +132,9 @@ import 'package:flutter/material.dart';
 
 import 'package:aifitness/data/network/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class DeviceDashboardViewModel
-    extends ChangeNotifier {
+class DeviceDashboardViewModel extends ChangeNotifier {
   final ApiService _apiService = ApiService();
 
   bool isLoading = false;
@@ -144,46 +145,47 @@ class DeviceDashboardViewModel
 
   List<WeightSummaryModel> weightList = [];
 
-  Future<void> getAllProfiles() async {
-    try {
-      isLoading = true;
-      notifyListeners();
+Future<void> getAllProfiles(BuildContext context) async {
+  try {
+    isLoading = true;
+    notifyListeners();
 
-      final response =
-          await _apiService.postContractRequest(
-        "get-all-machine-profiles",
-        {
-          "device_id": "123456jhg",
-        },
+    final prefs = await SharedPreferences.getInstance();
+    String? deviceId = prefs.getString("device_id");
+
+    print("deviceId $deviceId");
+
+    final response = await _apiService.postContractRequest(
+      "get-all-machine-profiles",
+      {"device_id": deviceId},
+    );
+
+    if (response["success"] == true) {
+      final data = response["data"] as List;
+
+      profiles = data.map((e) => DeviceProfileModel.fromJson(e)).toList();
+
+      activeProfile = profiles.firstWhere(
+        (e) => e.currentDashboardData != null,
+        orElse: () => profiles.first,
       );
 
-      if (response["success"] == true) {
-        final data = response["data"] as List;
+      generateWeightSummary();
+    } else {
+          print("deviceId next");
 
-        profiles = data
-            .map(
-              (e) => DeviceProfileModel
-                  .fromJson(e),
-            )
-            .toList();
-
-        /// active profile
-        activeProfile = profiles.firstWhere(
-          (e) =>
-              e.currentDashboardData !=
-              null,
-          orElse: () => profiles.first,
-        );
-
-        generateWeightSummary();
-      }
-    } catch (e) {
-      debugPrint("ERROR => $e");
-    } finally {
-      isLoading = false;
-      notifyListeners();
+      Navigator.pushNamed(
+        context,
+        RouteNames.memberProfile,
+      );
     }
+  } catch (e) {
+    debugPrint("ERROR => $e");
+  } finally {
+    isLoading = false;
+    notifyListeners();
   }
+}
 
   /// ================= WEIGHT SUMMARY =================
 
@@ -191,51 +193,37 @@ class DeviceDashboardViewModel
     weightList.clear();
 
     try {
-      final dashboard =
-          activeProfile?.dashboardJson ??
-              {};
+      final dashboard = activeProfile?.dashboardJson ?? {};
 
-      final newAppData =
-          dashboard["new_app_data"] ??
-              {};
+      final newAppData = dashboard["new_app_data"] ?? {};
 
-      final phaseSummary =
-          newAppData[
-                  "phase_summary_dynamic"] ??
-              [];
+      final phaseSummary = newAppData["phase_summary_dynamic"] ?? [];
 
-      final createdDate = formatDate(
-        activeProfile?.createdAt,
-      );
+      final createdDate = formatDate(activeProfile?.createdAt);
 
-      final updatedDate = formatDate(
-        activeProfile?.updatedAt,
-      );
+      final updatedDate = formatDate(activeProfile?.updatedAt);
 
       /// CURRENT WEIGHT
       weightList.add(
         WeightSummaryModel(
-          weight: dashboard[
-                      "current_weight_formatted"]
-                  ?.toString()
-                  .replaceAll("KG", "") ??
+          weight:
+              dashboard["current_weight_formatted"]?.toString().replaceAll(
+                "KG",
+                "",
+              ) ??
               "0",
           date: updatedDate,
         ),
       );
 
       /// PHASE DATA
-      for (int i = 0;
-          i < phaseSummary.length;
-          i++) {
+      for (int i = 0; i < phaseSummary.length; i++) {
         final item = phaseSummary[i];
 
         /// START WEIGHT
         weightList.add(
           WeightSummaryModel(
-            weight:
-                item["start_weight"]
-                    .toString(),
+            weight: item["start_weight"].toString(),
             date: createdDate,
           ),
         );
@@ -243,9 +231,7 @@ class DeviceDashboardViewModel
         /// END WEIGHT
         weightList.add(
           WeightSummaryModel(
-            weight:
-                item["end_weight"]
-                    .toString(),
+            weight: item["end_weight"].toString(),
             date: updatedDate,
           ),
         );
@@ -257,14 +243,12 @@ class DeviceDashboardViewModel
 
   /// DATE FORMAT
   String formatDate(String? date) {
-    if (date == null ||
-        date.isEmpty) {
+    if (date == null || date.isEmpty) {
       return "--";
     }
 
     try {
-      final parsed =
-          DateTime.parse(date);
+      final parsed = DateTime.parse(date);
 
       return "${parsed.day.toString().padLeft(2, '0')}-"
           "${parsed.month.toString().padLeft(2, '0')}-"
@@ -276,8 +260,7 @@ class DeviceDashboardViewModel
 
   /// PROFILE IMAGE
   String getProfileImage() {
-    if (activeProfile?.profilePic ==
-        null) {
+    if (activeProfile?.profilePic == null) {
       return "assets/images/avtarMale/male_avtar1.jpg";
     }
 
@@ -286,12 +269,13 @@ class DeviceDashboardViewModel
 
   /// USER NAME
   String getUserName() {
-    return activeProfile?.name ??
-        "Guest";
+    return activeProfile?.name ?? "Guest";
   }
 
   /// MEMBER SINCE
   String getMemberSince() {
-    return "Registered ${activeProfile?.noOfDaysRegistered ?? 0} days ago";
+    // return "Registered ${activeProfile?.noOfDaysRegistered ?? 0} days ago";
+        return "Active Profile";
+
   }
 }

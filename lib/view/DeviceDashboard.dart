@@ -2,6 +2,9 @@ import 'package:aifitness/models/weight_summary_model.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/device_dashboard_ViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mobile_device_identifier/mobile_device_identifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeviceDashboard extends StatefulWidget {
   const DeviceDashboard({super.key});
@@ -12,18 +15,41 @@ class DeviceDashboard extends StatefulWidget {
 
 class _DeviceDashboardState extends State<DeviceDashboard> {
   final DeviceDashboardViewModel viewModel = DeviceDashboardViewModel();
+  String _deviceId = 'Unknown';
+  final _mobileDeviceIdentifierPlugin = MobileDeviceIdentifier();
+@override
+void initState() {
+  super.initState();
 
-  @override
-  void initState() {
-    super.initState();
+  initDeviceId();
 
-    viewModel.getAllProfiles();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    viewModel.getAllProfiles(context);
+  });
 
-    viewModel.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
+  viewModel.addListener(() {
+    if (mounted) {
+      setState(() {});
+    }
+  });
+}
+
+  Future<void> initDeviceId() async {
+    String deviceId;
+    try {
+      deviceId =
+          await _mobileDeviceIdentifierPlugin.getDeviceId() ??
+          'Unknown platform version';
+    } on PlatformException {
+      deviceId = 'Failed to get device ID.';
+    }
+
+    setState(() {
+      _deviceId = deviceId;
     });
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("device_id", _deviceId);
   }
 
   @override

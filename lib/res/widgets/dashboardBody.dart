@@ -425,6 +425,8 @@ class _DashboardBodyState extends State<DashboardBody> {
   Widget _bottomButtons(BuildContext context) => Column(
     children: [
       const SizedBox(height: 10),
+      Center(child: _button(context, "View Measurement Results")),
+      const SizedBox(height: 10),
       Center(child: _button(context, "See Exercise List")),
       const SizedBox(height: 10),
       Center(child: _button(context, "See Your Nutrition")),
@@ -454,6 +456,9 @@ class _DashboardBodyState extends State<DashboardBody> {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
+          if (text == "View Measurement Results") {
+            Navigator.pushNamed(context, RouteNames.allMeasurementResult);
+          }
           if (text == "See Exercise List") {
             Navigator.pushNamed(context, RouteNames.exerciseListScreen);
           } else if (text == "See Your Nutrition") {

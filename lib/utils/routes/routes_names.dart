@@ -72,5 +72,7 @@ class RouteNames {
   static const String getStartScreenView = "get_start_screen_view";
   static const String memberProfile = "member_profile";
   static const String addMember = "add_member";
+  static const String browserOpenLink = "browser_open_link";
+  static const String blutootnScreen = "blutootn_screen";
 
 }

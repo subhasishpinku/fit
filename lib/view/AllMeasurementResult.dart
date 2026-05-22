@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/all_measurement_result_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -104,22 +106,25 @@ class AllMeasurementResultBody extends StatelessWidget {
                     muscle: muscle,
 
                     onTap: () {
-                       Navigator.pushNamed(
-    context,
-    RouteNames.measurementResult,
+                      // Convert to JSON string - this is the key fix
+                      final machineDataJson = jsonEncode(machineData);
 
-    arguments: {
+                      Navigator.pushNamed(
+                        context,
+                        RouteNames.measurementResult,
+                        arguments: {
+                          "dateTime": createdAt,
+                          "machineDataJson":
+                              machineDataJson, // Pass JSON string instead of List
+                          "weight": weight,
+                          "fat": fat,
+                          "muscle": muscle,
+                        },
+                      );
 
-      "dateTime": createdAt,
-      "machineData": machineData,
-
-      "weight": weight,
-      "fat": fat,
-      "muscle": muscle,
-    },
-  );
-
-                      print(machineData);
+                      print(
+                        "machineData length: ${machineData.length}",
+                      ); // This should print > 0
                     },
                   ),
                 );

@@ -1,6 +1,7 @@
 import 'package:aifitness/res/widgets/CustomDrawer.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/res/widgets/dashboardBody.dart';
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //  FIXED — use Builder to get Scaffold context
+                    // Menu button
                     Builder(
                       builder: (context) => IconButton(
                         icon: Icon(Icons.menu, color: AppColors.primaryColor),
@@ -60,18 +61,55 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(right: 190),
-                      child: Text(
-                        "Dashboard",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
+                    // Dashboard title
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          "Dashboard",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 48), // balance spacing
+
+                    // Bluetooth button
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RouteNames.blutootnScreen,
+                        );
+                      },
+                      child: Container(
+                        height: 45,
+                        width: 45,
+                        margin: const EdgeInsets.only(right: 12),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [Color(0xff4facfe), Color(0xff00f2fe)],
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            "assets/images/press.png",
+                            height: 45,
+                            width: 45,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.touch_app,
+                                color: Colors.white,
+                                size: 24,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -79,34 +117,41 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
 
-        ///  Drawer
+        /// Drawer
         drawer: const CustomDrawer(),
 
-        ///  Body
-        // body: Center(
-        //   child: Text(
-        //     "Dashboard Page $pageIndex",
-        //     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        //   ),
-        // ),
-        body: ChangeNotifierProvider(
-          create: (_) => DashboardBodyViewModel(),
-          child: const DashboardBody(),
-        ),
+        /// Body - changes based on bottom nav selection
+        body: pageIndex == 0
+            ? ChangeNotifierProvider(
+                create: (_) => DashboardBodyViewModel(),
+                child: const DashboardBody(),
+              )
+            : Center(
+                child: Text(
+                  pageIndex == 1 ? "Workout Page" : "Profile Page",
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
 
         /// Bottom Navigation Bar
         // bottomNavigationBar: BottomNavigationBar(
         //   currentIndex: pageIndex,
         //   onTap: _onPageSelected,
-        //   selectedItemColor: Colors.green,
+        //   selectedItemColor: AppColors.primaryColor,
         //   unselectedItemColor: Colors.grey,
         //   items: const [
-        //     BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.dashboard),
+        //       label: "Dashboard",
+        //     ),
         //     BottomNavigationBarItem(
         //       icon: Icon(Icons.fitness_center),
         //       label: "Workout",
         //     ),
-        //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.person),
+        //       label: "Profile",
+        //     ),
         //   ],
         // ),
       ),

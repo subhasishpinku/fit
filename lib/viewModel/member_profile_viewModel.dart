@@ -59,4 +59,104 @@ class MemberProfileViewModel extends ChangeNotifier {
     if (profiles.isEmpty) return null;
     return profiles[selectedIndex];
   }
+
+  // Fixed activateProfile method using copyWith
+  Future<bool> activateProfile(String profileId) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      
+      final prefs = await SharedPreferences.getInstance();
+      String? deviceId = prefs.getString("device_id");
+      
+      final response = await _apiService.postRequest(
+        "activate-machine-profile",
+        {
+          "device_id": deviceId,
+          "profile_id": profileId,
+        },
+      );
+      
+      final data = response.data;
+      
+      if (data["success"] == true) {
+        // Update local list using copyWith to create new instances
+        List<MemberProfileModel> updatedProfiles = [];
+        
+        for (int i = 0; i < profiles.length; i++) {
+          if (profiles[i].id.toString() == profileId) {
+            // Activate this profile
+            updatedProfiles.add(profiles[i].copyWith(machineProfileActive: "1"));
+            selectedIndex = i;
+          } else {
+            // Deactivate other profiles
+            updatedProfiles.add(profiles[i].copyWith(machineProfileActive: "0"));
+          }
+        }
+        
+        profiles = updatedProfiles;
+        
+        debugPrint("Profile activated successfully: $profileId");
+        return true;
+      } else {
+        debugPrint("Failed to activate profile: ${data["message"]}");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("ERROR activating profile: $e");
+      return false;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // Fixed deleteProfile method
+  Future<bool> deleteProfile(String profileId) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      
+      final prefs = await SharedPreferences.getInstance();
+      String? deviceId = prefs.getString("device_id");
+      
+      final response = await _apiService.postRequest(
+        "delete-machine-profile",
+        {
+          "device_id": deviceId,
+          "profile_id": profileId,
+        },
+      );
+      
+      final data = response.data;
+      
+      if (data["success"] == true) {
+        // Remove from local list
+        final index = profiles.indexWhere((p) => p.id.toString() == profileId);
+        if (index != -1) {
+          profiles.removeAt(index);
+          
+          // Adjust selected index
+          if (selectedIndex >= profiles.length) {
+            selectedIndex = profiles.length - 1;
+          }
+          if (selectedIndex < 0 && profiles.isNotEmpty) {
+            selectedIndex = 0;
+          }
+        }
+        
+        debugPrint("Profile deleted successfully: $profileId");
+        return true;
+      } else {
+        debugPrint("Failed to delete profile: ${data["message"]}");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("ERROR deleting profile: $e");
+      return false;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
 }

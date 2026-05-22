@@ -278,7 +278,12 @@ void initState() {
 
                           color: Colors.blue.shade100,
 
-                          onTap: () {},
+                          onTap: () {
+                              Navigator.pushNamed(
+                              context,
+                              RouteNames.memberProfile,
+                            );
+                          },
                         ),
 
                         /// MENU 3
@@ -291,7 +296,12 @@ void initState() {
 
                           color: Colors.green.shade100,
 
-                          onTap: () {},
+                          onTap: () {
+                              Navigator.pushNamed(
+                              context,
+                              RouteNames.browserOpenLink,
+                            );
+                          },
                         ),
 
                         /// MENU 4
@@ -304,7 +314,12 @@ void initState() {
 
                           color: Colors.purple.shade100,
 
-                          onTap: () {},
+                          onTap: () {
+                              Navigator.pushNamed(
+                              context,
+                              RouteNames.signinScreen,
+                            );
+                          },
                         ),
 
                         const SizedBox(height: 20),
@@ -333,7 +348,7 @@ void initState() {
                                   onTap: () {
                                     Navigator.pushNamed(
                                       context,
-                                      RouteNames.memberProfile,
+                                      RouteNames.blutootnScreen,
                                     );
                                   },
                                   child: Positioned(

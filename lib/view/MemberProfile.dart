@@ -58,7 +58,6 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
-
                                 InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
@@ -67,7 +66,6 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                 ),
                               ],
                             ),
-
                             const SizedBox(height: 25),
 
                             /// PROFILE LIST
@@ -78,7 +76,6 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                 itemCount: vm.profiles.length,
                                 itemBuilder: (context, index) {
                                   final item = vm.profiles[index];
-
                                   return GestureDetector(
                                     onTap: () {
                                       vm.changeProfile(index);
@@ -90,9 +87,7 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                           Stack(
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.all(
-                                                  2,
-                                                ),
+                                                padding: const EdgeInsets.all(2),
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
                                                     color: Colors.blue,
@@ -109,11 +104,21 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                                     width: 82,
                                                     height: 82,
                                                     fit: BoxFit.cover,
+                                                    errorBuilder: (context, error, stackTrace) {
+                                                      return Container(
+                                                        width: 82,
+                                                        height: 82,
+                                                        color: Colors.grey.shade300,
+                                                        child: const Icon(
+                                                          Icons.person,
+                                                          size: 40,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
                                                 ),
                                               ),
-
-                                              /// ACTIVE PROFILE
                                               if (vm.selectedIndex == index)
                                                 Positioned(
                                                   right: -2,
@@ -122,9 +127,7 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                                     width: 34,
                                                     height: 34,
                                                     decoration: BoxDecoration(
-                                                      color: Colors
-                                                          .greenAccent
-                                                          .shade400,
+                                                      color: Colors.greenAccent.shade400,
                                                       shape: BoxShape.circle,
                                                       border: Border.all(
                                                         color: Colors.white,
@@ -140,9 +143,7 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                                 ),
                                             ],
                                           ),
-
                                           const SizedBox(height: 8),
-
                                           SizedBox(
                                             width: 90,
                                             child: Text(
@@ -162,7 +163,6 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                 },
                               ),
                             ),
-
                             const SizedBox(height: 18),
 
                             /// PROFILE CARD
@@ -193,9 +193,7 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                       color: Colors.white,
                                     ),
                                   ),
-
                                   const SizedBox(height: 18),
-
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(18),
                                     child: Image.network(
@@ -203,11 +201,21 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                       width: 120,
                                       height: 120,
                                       fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          width: 120,
+                                          height: 120,
+                                          color: Colors.grey.shade300,
+                                          child: const Icon(
+                                            Icons.person,
+                                            size: 60,
+                                            color: Colors.grey,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
-
                                   const SizedBox(height: 24),
-
                                   Row(
                                     children: [
                                       Expanded(
@@ -216,23 +224,18 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                           subTitle: "AGE",
                                         ),
                                       ),
-
                                       const SizedBox(width: 10),
-
                                       Expanded(
                                         child: buildInfoBox(
                                           title: profile.genderText,
                                           subTitle: "GENDER",
                                         ),
                                       ),
-
                                       const SizedBox(width: 10),
-
                                       Expanded(
                                         child: buildInfoBox(
                                           title: profile.height ?? "0",
-                                          subTitle:
-                                              "HEIGHT\n${profile.heightUnit ?? ""}",
+                                          subTitle: "HEIGHT\n${profile.heightUnit ?? ""}",
                                         ),
                                       ),
                                     ],
@@ -240,7 +243,6 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                 ],
                               ),
                             ),
-
                             const SizedBox(height: 24),
 
                             /// ADD MEMBER
@@ -250,22 +252,37 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                               bgColor: const Color(0xffDDEEFF),
                               textColor: Colors.blue,
                               onTap: () {
-                                 Navigator.pushNamed(
-                                      context,
-                                      RouteNames.addMember,
-                                    );
+                                Navigator.pushNamed(context, RouteNames.addMember);
                               },
                             ),
-
                             const SizedBox(height: 20),
 
-                            /// USE PROFILE
+                            /// USE THIS PROFILE - WITH CONFIRMATION DIALOG
                             buildButton(
                               text: "Use This Profile",
                               bgColor: Colors.blue,
                               textColor: Colors.white,
                               onTap: () {
-                                
+                                _showActivateDialog(context, profile.name, () async {
+                                  final success = await vm.activateProfile(profile.id as String);
+                                  if (success && mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("${profile.name}'s profile activated!"),
+                                        backgroundColor: Colors.green,
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  } else if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Failed to activate profile"),
+                                        backgroundColor: Colors.red,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                });
                               },
                             ),
                             const SizedBox(height: 20),
@@ -276,33 +293,29 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                               bgColor: const Color(0xffFFD7DD),
                               textColor: Colors.pinkAccent,
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Delete Profile"),
-                                      content: const Text(
-                                        "Are you sure you want to delete this profile?",
+                                _showDeleteDialog(context, profile.name, () async {
+                                  final success = await vm.deleteProfile(profile.id as String);
+                                  if (success && mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Profile deleted successfully!"),
+                                        backgroundColor: Colors.green,
+                                        duration: Duration(seconds: 2),
                                       ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("Cancel"),
-                                        ),
-
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: const Text(
-                                            "Delete",
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ),
-                                      ],
                                     );
-                                  },
-                                );
+                                    if (vm.profiles.isEmpty && mounted) {
+                                      Navigator.pop(context);
+                                    }
+                                  } else if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Failed to delete profile"),
+                                        backgroundColor: Colors.red,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                });
                               },
                             ),
                           ],
@@ -311,6 +324,97 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                     ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _showActivateDialog(BuildContext context, String profileName, VoidCallback onConfirm) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Row(
+              children: [
+                Icon(Icons.person_add_alt_1, color: Colors.blue.shade700, size: 28),
+                const SizedBox(width: 12),
+                const Text("Confirm Activation", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ],
+            ),
+            content: Text(
+              "Are you sure you want to activate $profileName’s profile?",
+              style: const TextStyle(fontSize: 16, height: 1.4),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancel", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey)),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onConfirm();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text("Activate", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              ),
+            ],
+            actionsAlignment: MainAxisAlignment.end,
+            actionsPadding: const EdgeInsets.all(16),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, String profileName, VoidCallback onConfirm) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            children: [
+              Icon(Icons.delete_outline, color: Colors.red.shade700, size: 28),
+              const SizedBox(width: 12),
+              const Text("Delete Profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          content: Text(
+            "Are you sure you want to delete $profileName’s profile? This action cannot be undone.",
+            style: const TextStyle(fontSize: 16, height: 1.4),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onConfirm();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text("Delete", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            ),
+          ],
+          actionsAlignment: MainAxisAlignment.end,
+          actionsPadding: const EdgeInsets.all(16),
         );
       },
     );
@@ -330,23 +434,13 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
             title,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
-
           const SizedBox(height: 6),
-
           Text(
             subTitle,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade700,
-            ),
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey.shade700),
           ),
         ],
       ),
@@ -374,17 +468,11 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
           children: [
             if (icon != null) ...[
               Icon(icon, color: textColor, size: 30),
-
               const SizedBox(width: 12),
             ],
-
             Text(
               text,
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.w700,
-                color: textColor,
-              ),
+              style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700, color: textColor),
             ),
           ],
         ),

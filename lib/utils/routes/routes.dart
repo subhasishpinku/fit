@@ -6,6 +6,8 @@ import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/AboutsUs.dart';
 import 'package:aifitness/view/AddMember.dart';
 import 'package:aifitness/view/AllMeasurementResult.dart';
+import 'package:aifitness/view/BlutootnScreen.dart';
+import 'package:aifitness/view/BrowserOpenLink.dart';
 import 'package:aifitness/view/ContactUs.dart';
 import 'package:aifitness/view/DeviceDashboard.dart';
 import 'package:aifitness/view/FitNetwork.dart';
@@ -900,13 +902,27 @@ class Routes {
           ),
         );
 
-      case (RouteNames.measurementResult):
-        return MaterialPageRoute(
-          builder: (BuildContext context) => const MeasurementResult(),
-        );
+     case (RouteNames.measurementResult):
+  return MaterialPageRoute(
+    builder: (BuildContext context) {
+      // Get arguments from settings
+      final args = settings.arguments as Map<String, dynamic>?;
+      return MeasurementResult(
+        arguments: args,  // Pass arguments to the widget
+      );
+    },
+  );
       case (RouteNames.getStartScreenView):
         return MaterialPageRoute(
           builder: (BuildContext context) => const GetStartScreenView(),
+        );
+         case (RouteNames.browserOpenLink):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const BrowserOpenLink(),
+        );
+           case (RouteNames.blutootnScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const BlutootnScreen(),
         );
       default:
         return MaterialPageRoute(

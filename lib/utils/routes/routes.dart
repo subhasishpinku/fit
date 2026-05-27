@@ -81,6 +81,7 @@ import 'package:aifitness/viewModel/RegisterViewModel.dart';
 import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:aifitness/viewModel/activity_level_viewModel.dart';
+import 'package:aifitness/viewModel/addMember_viewModel.dart';
 import 'package:aifitness/viewModel/add_meal_viewmodel.dart';
 import 'package:aifitness/viewModel/all_measurement_result_ViewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
@@ -882,7 +883,7 @@ class Routes {
       case RouteNames.addMember:
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider(
-            create: (_) => AddMealViewModel(),
+            create: (_) => AddmemberViewmodel(),
             child: AddMember(),
           ),
         );

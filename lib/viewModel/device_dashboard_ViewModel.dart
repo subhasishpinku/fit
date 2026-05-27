@@ -176,7 +176,7 @@ Future<void> getAllProfiles(BuildContext context) async {
 
       Navigator.pushNamed(
         context,
-        RouteNames.memberProfile,
+        RouteNames.addMember,
       );
     }
   } catch (e) {

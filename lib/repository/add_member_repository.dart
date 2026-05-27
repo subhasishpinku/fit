@@ -13,7 +13,7 @@ class AddMemberRepository {
       "register-machine-user",
       model.toJson(),
     );
-
+    print("AddMemberRepository $response");
     return response;
   }
 }

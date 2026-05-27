@@ -13,7 +13,7 @@ class GetStartScreen extends StatefulWidget {
 class _GetStartScreenState extends State<GetStartScreen> {
   late VideoPlayerController _controller;
   bool showVideo = true;
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   String? deviceId = "";
   String? email = "";
@@ -149,12 +149,12 @@ class _GetStartScreenState extends State<GetStartScreen> {
 
         _buildOptionCard(
           index: 0,
-          title: "Smart Scale Only",
+          title: "FitAmplify Smart \nScale Only",
           subtitle: "Select how you'd like to use FitAmplify",
           features: const [
             "Auto weight sync with smart scale",
             "Complete weight history & trends",
-            "BMI tracking & insights",
+            "BMI tracking & health insights",
             "Basic analytics dashboard",
             "Support multiple users",
           ],
@@ -164,7 +164,7 @@ class _GetStartScreenState extends State<GetStartScreen> {
 
         _buildOptionCard(
           index: 1,
-          title: "Complete Experience",
+          title: "FitAmplify Complete \nExperience",
           subtitle: "Smart Scale + Diet & Exercise Planner",
           features: const [
             "Auto weight sync with smart scale",

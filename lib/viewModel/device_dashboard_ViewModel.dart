@@ -145,47 +145,44 @@ class DeviceDashboardViewModel extends ChangeNotifier {
 
   List<WeightSummaryModel> weightList = [];
 
-Future<void> getAllProfiles(BuildContext context) async {
-  try {
-    isLoading = true;
-    notifyListeners();
+  Future<void> getAllProfiles(BuildContext context) async {
+    try {
+      isLoading = true;
+      notifyListeners();
 
-    final prefs = await SharedPreferences.getInstance();
-    String? deviceId = prefs.getString("device_id");
+      final prefs = await SharedPreferences.getInstance();
+      String? deviceId = prefs.getString("device_id");
 
-    print("deviceId $deviceId");
+      print("deviceId $deviceId");
 
-    final response = await _apiService.postContractRequest(
-      "get-all-machine-profiles",
-      {"device_id": deviceId},
-    );
-
-    if (response["success"] == true) {
-      final data = response["data"] as List;
-
-      profiles = data.map((e) => DeviceProfileModel.fromJson(e)).toList();
-
-      activeProfile = profiles.firstWhere(
-        (e) => e.currentDashboardData != null,
-        orElse: () => profiles.first,
+      final response = await _apiService.postContractRequest(
+        "get-all-machine-profiles",
+        {"device_id": deviceId},
       );
+      print("get-all-machine-profiles $response");
+      if (response["success"] == true) {
+        final data = response["data"] as List;
 
-      generateWeightSummary();
-    } else {
-          print("deviceId next");
+        profiles = data.map((e) => DeviceProfileModel.fromJson(e)).toList();
 
-      Navigator.pushNamed(
-        context,
-        RouteNames.addMember,
-      );
+        activeProfile = profiles.firstWhere(
+          (e) => e.machineProfileActive == "1",
+          orElse: () => profiles.first,
+        );
+
+        generateWeightSummary();
+      } else {
+        print("deviceId next");
+
+        Navigator.pushNamed(context, RouteNames.addMember);
+      }
+    } catch (e) {
+      debugPrint("ERROR => $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
-  } catch (e) {
-    debugPrint("ERROR => $e");
-  } finally {
-    isLoading = false;
-    notifyListeners();
   }
-}
 
   /// ================= WEIGHT SUMMARY =================
 
@@ -275,7 +272,6 @@ Future<void> getAllProfiles(BuildContext context) async {
   /// MEMBER SINCE
   String getMemberSince() {
     // return "Registered ${activeProfile?.noOfDaysRegistered ?? 0} days ago";
-        return "Active Profile";
-
+    return "Active Profile";
   }
 }

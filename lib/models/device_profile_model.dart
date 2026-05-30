@@ -1,14 +1,22 @@
 import 'dart:convert';
 
 class DeviceProfileModel {
+
   final int id;
+
   final String name;
+
   final String? profilePic;
+
   final int noOfDaysRegistered;
+
   final dynamic currentDashboardData;
 
   final String? createdAt;
+
   final String? updatedAt;
+
+  final String machineProfileActive;
 
   DeviceProfileModel({
     required this.id,
@@ -18,6 +26,7 @@ class DeviceProfileModel {
     required this.currentDashboardData,
     required this.createdAt,
     required this.updatedAt,
+    required this.machineProfileActive,
   });
 
   factory DeviceProfileModel.fromJson(
@@ -25,14 +34,23 @@ class DeviceProfileModel {
   ) {
     return DeviceProfileModel(
       id: json["id"] ?? 0,
+
       name: json["name"] ?? "",
+
       profilePic: json["profile_pic"],
+
       noOfDaysRegistered:
           json["no_of_days_registered"] ?? 0,
+
       currentDashboardData:
           json["current_dashboard_data"],
+
       createdAt: json["created_at"],
+
       updatedAt: json["updated_at"],
+
+      machineProfileActive:
+          json["machine_profile_active"]?.toString() ?? "0",
     );
   }
 
@@ -42,9 +60,7 @@ class DeviceProfileModel {
     }
 
     if (currentDashboardData is String) {
-      return jsonDecode(
-        currentDashboardData,
-      );
+      return jsonDecode(currentDashboardData);
     }
 
     return currentDashboardData;

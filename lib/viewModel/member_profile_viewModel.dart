@@ -59,57 +59,54 @@ class MemberProfileViewModel extends ChangeNotifier {
     if (profiles.isEmpty) return null;
     return profiles[selectedIndex];
   }
+Future<bool> activateProfile(String profileId) async {
+  try {
+    isLoading = true;
+    notifyListeners();
 
-  // Fixed activateProfile method using copyWith
-  Future<bool> activateProfile(String profileId) async {
-    try {
-      isLoading = true;
-      notifyListeners();
-      
-      final prefs = await SharedPreferences.getInstance();
-      String? deviceId = prefs.getString("device_id");
-      
-      final response = await _apiService.postRequest(
-        "activate-machine-profile",
-        {
-          "device_id": deviceId,
-          "profile_id": profileId,
-        },
-      );
-      
-      final data = response.data;
-      
-      if (data["success"] == true) {
-        // Update local list using copyWith to create new instances
-        List<MemberProfileModel> updatedProfiles = [];
-        
-        for (int i = 0; i < profiles.length; i++) {
-          if (profiles[i].id.toString() == profileId) {
-            // Activate this profile
-            updatedProfiles.add(profiles[i].copyWith(machineProfileActive: "1"));
-            selectedIndex = i;
-          } else {
-            // Deactivate other profiles
-            updatedProfiles.add(profiles[i].copyWith(machineProfileActive: "0"));
-          }
+    final prefs = await SharedPreferences.getInstance();
+    String? deviceId = prefs.getString("device_id");
+      print("activateProfile $profileId  $deviceId");
+
+    final response = await _apiService.postRequest(
+      "make-machine-profile-active",
+      {
+        "device_id": deviceId,
+        "profile_id": profileId,
+      },
+    );
+
+    final data = response.data;
+
+    if (data["success"] == true) {
+
+      /// update local list
+      for (int i = 0; i < profiles.length; i++) {
+        profiles[i] = profiles[i].copyWith(
+          machineProfileActive:
+              profiles[i].id.toString() == profileId ? "1" : "0",
+        );
+
+        if (profiles[i].id.toString() == profileId) {
+          selectedIndex = i;
         }
-        
-        profiles = updatedProfiles;
-        
-        debugPrint("Profile activated successfully: $profileId");
-        return true;
-      } else {
-        debugPrint("Failed to activate profile: ${data["message"]}");
-        return false;
       }
-    } catch (e) {
-      debugPrint("ERROR activating profile: $e");
-      return false;
-    } finally {
-      isLoading = false;
+
       notifyListeners();
+      return true;
     }
+
+    return false;
+  } catch (e) {
+    debugPrint("Activate ERROR => $e");
+    return false;
+  } finally {
+    isLoading = false;
+    notifyListeners();
   }
+}
+  // Fixed activateProfile method using copyWith
+
 
   // Fixed deleteProfile method
   Future<bool> deleteProfile(String profileId) async {

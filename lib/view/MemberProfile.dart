@@ -330,7 +330,7 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
                                   profile.name,
                                   () async {
                                     final success = await vm.deleteProfile(
-                                      profile.id as String,
+                                       profile.id.toString(), 
                                     );
                                     if (success && mounted) {
                                       ScaffoldMessenger.of(
@@ -459,60 +459,63 @@ class _MemberProfileBodyState extends State<_MemberProfileBody> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Row(
-            children: [
-              Icon(Icons.delete_outline, color: Colors.red.shade700, size: 28),
-              const SizedBox(width: 12),
-              const Text(
-                "Delete Profile",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        return  Directionality(
+          textDirection: TextDirection.ltr,
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Row(
+              children: [
+                Icon(Icons.delete_outline, color: Colors.red.shade700, size: 28),
+                const SizedBox(width: 12),
+                const Text(
+                  "Delete Profile",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            content: Text(
+              "Are you sure you want to delete $profileName’s profile? This action cannot be undone.",
+              style: const TextStyle(fontSize: 16, height: 1.4),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onConfirm();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
               ),
             ],
+            actionsAlignment: MainAxisAlignment.end,
+            actionsPadding: const EdgeInsets.all(16),
           ),
-          content: Text(
-            "Are you sure you want to delete $profileName’s profile? This action cannot be undone.",
-            style: const TextStyle(fontSize: 16, height: 1.4),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                "Cancel",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                onConfirm();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text(
-                "Delete",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
-          actionsAlignment: MainAxisAlignment.end,
-          actionsPadding: const EdgeInsets.all(16),
         );
       },
     );

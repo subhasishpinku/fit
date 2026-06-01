@@ -59,7 +59,40 @@ class MemberProfileViewModel extends ChangeNotifier {
     if (profiles.isEmpty) return null;
     return profiles[selectedIndex];
   }
-Future<bool> activateProfile(String profileId) async {
+  Future<bool> activateProfile(String profileId) async {
+  try {
+    isLoading = true;
+    notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    String? deviceId = prefs.getString("device_id");
+    
+    final response = await _apiService.postRequest(
+      "make-machine-profile-active",
+      {
+        "device_id": deviceId,
+        "user_id": profileId,
+      },
+    );
+
+    final data = response.data;
+
+    if (data["success"] == true) {
+      // Refresh profiles to get latest state from server
+      await getProfiles();  // Re-fetch all profiles
+      return true;
+    }
+
+    return false;
+  } catch (e) {
+    debugPrint("Activate ERROR => $e");
+    return false;
+  } finally {
+    isLoading = false;
+    notifyListeners();
+  }
+}
+Future<bool> activateProfile1(String profileId) async {
   try {
     isLoading = true;
     notifyListeners();
@@ -110,6 +143,42 @@ Future<bool> activateProfile(String profileId) async {
 
   // Fixed deleteProfile method
   Future<bool> deleteProfile(String profileId) async {
+  try {
+    isLoading = true;
+    notifyListeners();
+    
+    final prefs = await SharedPreferences.getInstance();
+    String? deviceId = prefs.getString("device_id");
+    
+    final response = await _apiService.postRequest(
+      "delete-machine-profile",
+      {
+        "device_id": deviceId,
+        "user_id": profileId,  // Change from "profile_id" to "user_id"
+      },
+    );
+    
+    final data = response.data;
+    
+    if (data["success"] == true) {
+      // Refresh profiles from server to get updated list
+      await getProfiles();
+      
+      debugPrint("Profile deleted successfully: $profileId");
+      return true;
+    } else {
+      debugPrint("Failed to delete profile: ${data["message"]}");
+      return false;
+    }
+  } catch (e) {
+    debugPrint("ERROR deleting profile: $e");
+    return false;
+  } finally {
+    isLoading = false;
+    notifyListeners();
+  }
+}
+  Future<bool> deleteProfile1(String profileId) async {
     try {
       isLoading = true;
       notifyListeners();

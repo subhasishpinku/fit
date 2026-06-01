@@ -29,30 +29,25 @@ class DeviceProfileModel {
     required this.machineProfileActive,
   });
 
-  factory DeviceProfileModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    return DeviceProfileModel(
-      id: json["id"] ?? 0,
+ factory DeviceProfileModel.fromJson(
+  Map<String, dynamic> json,
+) {
+  return DeviceProfileModel(
+    id: json["id"] ?? 0,
+    name: json["name"] ?? "",
+    profilePic: json["profile_pic"],
+    noOfDaysRegistered: json["no_of_days_registered"] ?? 0,
+    currentDashboardData: json["current_dashboard_data"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
 
-      name: json["name"] ?? "",
-
-      profilePic: json["profile_pic"],
-
-      noOfDaysRegistered:
-          json["no_of_days_registered"] ?? 0,
-
-      currentDashboardData:
-          json["current_dashboard_data"],
-
-      createdAt: json["created_at"],
-
-      updatedAt: json["updated_at"],
-
-      machineProfileActive:
-          json["machine_profile_active"]?.toString() ?? "0",
-    );
-  }
+    machineProfileActive:
+        json["machine_profile_active"]
+                ?.toString()
+                .trim() ??
+            "0",
+  );
+}
 
   Map<String, dynamic> get dashboardJson {
     if (currentDashboardData == null) {

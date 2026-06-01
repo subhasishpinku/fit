@@ -145,44 +145,55 @@ class DeviceDashboardViewModel extends ChangeNotifier {
 
   List<WeightSummaryModel> weightList = [];
 
-  Future<void> getAllProfiles(BuildContext context) async {
-    try {
-      isLoading = true;
-      notifyListeners();
+Future<void> getAllProfiles(BuildContext context) async {
+  try {
+    isLoading = true;
+    notifyListeners();
 
-      final prefs = await SharedPreferences.getInstance();
-      String? deviceId = prefs.getString("device_id");
+    final prefs = await SharedPreferences.getInstance();
+    String? deviceId = prefs.getString("device_id");
 
-      print("deviceId $deviceId");
+    final response = await _apiService.postContractRequest(
+      "get-all-machine-profiles",
+      {"device_id": deviceId},
+    );
 
-      final response = await _apiService.postContractRequest(
-        "get-all-machine-profiles",
-        {"device_id": deviceId},
-      );
-      print("get-all-machine-profiles $response");
-      if (response["success"] == true) {
-        final data = response["data"] as List;
+    if (response["success"] == true) {
+      final data = response["data"] as List;
 
-        profiles = data.map((e) => DeviceProfileModel.fromJson(e)).toList();
+      profiles = data
+          .map((e) => DeviceProfileModel.fromJson(e))
+          .toList();
 
-        activeProfile = profiles.firstWhere(
-          (e) => e.machineProfileActive == "1",
-          orElse: () => profiles.first,
+      // Debug
+      for (final p in profiles) {
+        debugPrint(
+          "Profile => id=${p.id}, active='${p.machineProfileActive}'",
         );
-
-        generateWeightSummary();
-      } else {
-        print("deviceId next");
-
-        Navigator.pushNamed(context, RouteNames.addMember);
       }
-    } catch (e) {
-      debugPrint("ERROR => $e");
-    } finally {
-      isLoading = false;
-      notifyListeners();
+
+      /// Find active profile safely
+      final activeIndex = profiles.indexWhere(
+        (e) => e.machineProfileActive.trim() == "1",
+      );
+
+      if (activeIndex != -1) {
+        activeProfile = profiles[activeIndex];
+      } else {
+        activeProfile = profiles.isNotEmpty ? profiles.first : null;
+      }
+
+      generateWeightSummary();
+    } else {
+      Navigator.pushNamed(context, RouteNames.addMember);
     }
+  } catch (e) {
+    debugPrint("ERROR => $e");
+  } finally {
+    isLoading = false;
+    notifyListeners();
   }
+}
 
   /// ================= WEIGHT SUMMARY =================
 

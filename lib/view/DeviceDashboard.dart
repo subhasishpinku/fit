@@ -4,6 +4,7 @@ import 'package:aifitness/viewModel/device_dashboard_ViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DeviceDashboard extends StatefulWidget {
@@ -14,9 +15,25 @@ class DeviceDashboard extends StatefulWidget {
 }
 
 class _DeviceDashboardState extends State<DeviceDashboard> {
-  final DeviceDashboardViewModel viewModel = DeviceDashboardViewModel();
+  // final DeviceDashboardViewModel viewModel = DeviceDashboardViewModel();
   String _deviceId = 'Unknown';
   final _mobileDeviceIdentifierPlugin = MobileDeviceIdentifier();
+// @override
+// void initState() {
+//   super.initState();
+
+//   initDeviceId();
+
+//   WidgetsBinding.instance.addPostFrameCallback((_) {
+//     viewModel.getAllProfiles(context);
+//   });
+
+//   viewModel.addListener(() {
+//     if (mounted) {
+//       setState(() {});
+//     }
+//   });
+// }
 @override
 void initState() {
   super.initState();
@@ -24,16 +41,10 @@ void initState() {
   initDeviceId();
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    viewModel.getAllProfiles(context);
-  });
-
-  viewModel.addListener(() {
-    if (mounted) {
-      setState(() {});
-    }
+    context.read<DeviceDashboardViewModel>()
+        .getAllProfiles(context);
   });
 }
-
   Future<void> initDeviceId() async {
     String deviceId;
     try {
@@ -54,12 +65,14 @@ void initState() {
 
   @override
   void dispose() {
-    viewModel.dispose();
+    // viewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+      final viewModel =
+      context.watch<DeviceDashboardViewModel>();
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
